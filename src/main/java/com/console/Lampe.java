@@ -1,0 +1,63 @@
+package com.console;
+
+public class Lampe {
+    private int id;
+    private String name;
+    private byte red;
+    private byte green;
+    private byte blue;
+    private final byte[] dmx;
+
+    public Lampe(int newId,String newName,int channel) {
+        id = newId;
+        name = newName;
+        dmx = new byte[channel];
+    }
+
+    public byte[] returnDmx() {
+            dmx[0] = red;
+            dmx[1] = green;
+            dmx[3] = blue;
+            return dmx;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public byte getRed() {
+        return red;
+    }
+
+    public void setRed(byte red) {
+        this.red = red;
+    }
+
+    public byte getGreen() {
+        return green;
+    }
+
+    public void setGreen(byte green) {
+        this.green = green;
+    }
+
+    public byte getBlue() {
+        return blue;
+    }
+
+    public void setBlue(byte blue) {
+        this.blue = blue;
+    }
+}
