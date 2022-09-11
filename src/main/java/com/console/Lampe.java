@@ -6,19 +6,25 @@ public class Lampe {
     private byte red;
     private byte green;
     private byte blue;
+    private int channel;
     private final byte[] dmx;
 
-    public Lampe(int newId,String newName,int channel) {
+    public Lampe(int newId, String newName, int newChannel) {
         id = newId;
         name = newName;
-        dmx = new byte[channel];
+        channel = newChannel;
+        dmx = new byte[newChannel];
     }
 
-    public byte[] returnDmx() {
+    public void setDmx() {
             dmx[0] = red;
             dmx[1] = green;
-            dmx[3] = blue;
-            return dmx;
+            dmx[2] = blue;
+    }
+
+    public byte[] getDmx() {
+        setDmx();
+        return dmx;
     }
 
     public int getId() {
@@ -59,5 +65,10 @@ public class Lampe {
 
     public void setBlue(byte blue) {
         this.blue = blue;
+    }
+
+
+    public int getChannel() {
+        return channel;
     }
 }

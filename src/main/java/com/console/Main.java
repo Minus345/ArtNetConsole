@@ -1,39 +1,89 @@
 package com.console;
 
-import ch.bildspur.artnet.ArtNetBuffer;
-import ch.bildspur.artnet.ArtNetClient;
-
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.Enumeration;
+import java.util.*;
 
 public class Main {
 
-    public static void main(String[] args) throws SocketException {
-        System.out.println("Start");
+    public static ArrayList<Lampe> Lampen = new ArrayList<>();
 
-        Lampe lampe =  new Lampe(1,"led",3);
+    public static void main(String[] args) throws IOException {
+        System.out.println("Start");
 
         Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
         while (interfaces.hasMoreElements()) {
             NetworkInterface networkInterface = interfaces.nextElement();
-            System.out.println(networkInterface.getDisplayName() + " : " + networkInterface.getName());
+            System.out.println(networkInterface.getDisplayName() + " : " + networkInterface.getName() + "-------------" + networkInterface.getInterfaceAddresses() + "  " + networkInterface.getInetAddresses());
         }
 
-        ArtNetClient artnet = new ArtNetClient(new ArtNetBuffer(), 8000, 8000);
-
-        NetworkInterface ni = NetworkInterface.getByName(""); // interface name
+        NetworkInterface ni = NetworkInterface.getByName("eth6"); // interface name
         InetAddress address = ni.getInetAddresses().nextElement();
 
-        artnet.start(address);
-        while (true) {
-            byte[] data = artnet.readDmxData(0, 0);
-            for (int i = 1; i < 512; i++) {
-                System.out.print((data[i] & 0xFF) + "  ");
+        System.out.println("Network Interface: " + ni.getName() + " | " + ni.getInetAddresses().nextElement() + " | " + ni.getInterfaceAddresses());
+
+        //Add Lampen
+        Lampen.add(new Lampe(2, "led", 3));
+        Lampen.add(new Lampe(1, "led", 3));
+        Lampen.add(new Lampe(3, "led", 3));
+
+        Lampen.sort(Comparator.comparingInt(Lampe::getId));
+
+        SendArtNet.tick(address); //192.168.178.131
+        selectLamp();
+
+
+    }
+
+    public static void selectLamp() throws IOException {
+
+        System.out.println("Lampen Id eigeben");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        int selection = Integer.parseInt(reader.readLine());
+
+        Iterator<Lampe> iterator = Lampen.iterator();
+        while (iterator.hasNext()) {
+            Lampe lampe = iterator.next();
+            if (lampe.getId() == selection) {
+                System.out.println("Lampe gefunden");
+                modifyLampe(lampe);
             }
-            System.out.println("  ");
         }
-        //artnet.stop();
+    }
+
+    public static void modifyLampe(Lampe lampe) throws IOException {
+        System.out.println("Effect auswählen");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String selection = reader.readLine();
+
+        switch (selection) {
+            case "r":
+                lampe.setRed((byte) 255);
+                lampe.setGreen((byte) 0);
+                lampe.setBlue((byte) 0);
+                break;
+            case "g":
+                lampe.setRed((byte) 0);
+                lampe.setGreen((byte) 255);
+                lampe.setBlue((byte) 0);
+                break;
+            case "b":
+                lampe.setRed((byte) 0);
+                lampe.setGreen((byte) 0);
+                lampe.setBlue((byte) 255);
+                break;
+            case "w":
+                lampe.setRed((byte) 255);
+                lampe.setGreen((byte) 255);
+                lampe.setBlue((byte) 255);
+                break;
+        }
+    }
+
+    public static ArrayList<Lampe> getLampen() {
+        return Lampen;
     }
 }
