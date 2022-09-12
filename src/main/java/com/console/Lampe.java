@@ -21,10 +21,23 @@ public class Lampe {
             dmx[1] = green;
             dmx[2] = blue;
     }
+    
+    public void clearLampe(){
+        dmx[0] = 0;
+        dmx[1] = 0;
+        dmx[2] = 0;
+    }
 
     public byte[] getDmx() {
         setDmx();
         return dmx;
+    }
+
+    public void changeColor() throws InterruptedException {
+        red++;
+        green++;
+        blue++;
+        Thread.sleep(100);
     }
 
     public int getId() {
@@ -66,7 +79,6 @@ public class Lampe {
     public void setBlue(byte blue) {
         this.blue = blue;
     }
-
 
     public int getChannel() {
         return channel;

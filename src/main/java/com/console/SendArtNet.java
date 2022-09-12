@@ -1,6 +1,5 @@
 package com.console;
 
-import ch.bildspur.artnet.ArtNetBuffer;
 import ch.bildspur.artnet.ArtNetClient;
 
 import java.net.InetAddress;
