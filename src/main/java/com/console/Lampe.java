@@ -23,9 +23,9 @@ public class Lampe {
     }
     
     public void clearLampe(){
-        dmx[0] = 0;
-        dmx[1] = 0;
-        dmx[2] = 0;
+        setRed((byte) 0);
+        setGreen((byte) 0);
+        setBlue((byte) 0);
     }
 
     public byte[] getDmx() {

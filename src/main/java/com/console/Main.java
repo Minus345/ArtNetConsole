@@ -42,8 +42,7 @@ public class Main {
         //Start Ticker
         SendArtNet.tick(address); //192.168.178.131
         tick();
-
-        LampActions.selectLamp();
+        //LampActions.selectLamp();
 
     }
 
