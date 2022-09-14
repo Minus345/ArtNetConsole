@@ -1,6 +1,7 @@
 package com.console;
 
 import com.console.midi.Midi;
+import com.console.yamlfile.YamlManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,9 +30,9 @@ public class Main {
         System.out.println("Network Interface: " + ni.getName() + " | " + ni.getInetAddresses().nextElement() + " | " + ni.getInterfaceAddresses());
 
         //Add Lampen
-        Lampen.add(new Lampe(2, "led", 3));
-        Lampen.add(new Lampe(1, "led", 3));
-        Lampen.add(new Lampe(3, "led", 3));
+        YamlManager.readFile();
+        //Lampen.add(new Lampe(2, "led", 3));
+
         //Sort Lamps
         Lampen.sort(Comparator.comparingInt(Lampe::getId));
 
@@ -42,8 +43,7 @@ public class Main {
         //Start Ticker
         SendArtNet.tick(address); //192.168.178.131
         tick();
-        //LampActions.selectLamp();
-
+        LampActions.selectLamp();
     }
 
     public static void tick() {

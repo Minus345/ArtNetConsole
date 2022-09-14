@@ -27,7 +27,7 @@ public class SendArtNet {
         // artnet.stop();
     }
 
-    public static void tick(InetAddress address) {
+public static void tick(InetAddress address) {
         createArtNetController(address);
         Runnable runnable = () -> {
             while (Thread.currentThread().isAlive()) {

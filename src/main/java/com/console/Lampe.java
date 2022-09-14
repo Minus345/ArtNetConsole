@@ -3,26 +3,46 @@ package com.console;
 public class Lampe {
     private int id;
     private String name;
+    private int channel;
+    private String[] channelData = new String[channel];
+    private String[] channelName = new String[channel];
     private byte red;
     private byte green;
     private byte blue;
-    private int channel;
+    private byte white;
+    private byte pan;
+    private byte tilt;
+    private byte dimmer;
+    private byte speed;
     private final byte[] dmx;
 
-    public Lampe(int newId, String newName, int newChannel) {
-        id = newId;
-        name = newName;
-        channel = newChannel;
-        dmx = new byte[newChannel];
+    public Lampe(int id, String name, int channel, String[] channelData,String[] channelName ) {
+        this.id = id;
+        this.name = name;
+        this.channel = channel;
+        this.channelData = channelData;
+        this.channelName = channelName;
+        dmx = new byte[channel];
     }
 
     public void setDmx() {
-            dmx[0] = red;
-            dmx[1] = green;
-            dmx[2] = blue;
+        //System.out.println(channelData.length);
+        for (int i = 0; i <= (channelData.length - 1); i++) {
+            //System.out.println(i);
+            switch (channelData[i]) {
+                case "pan" -> dmx[i] = pan;
+                case "tilt" -> dmx[i] = tilt;
+                case "dimmer" -> dmx[i] = dimmer;
+                case "red" -> dmx[i] = red;
+                case "green" -> dmx[i] = green;
+                case "blue" -> dmx[i] = blue;
+                case "speed" -> dmx[i] = speed;
+                case "custom" -> dmx[i] = 0;
+            }
+        }
     }
-    
-    public void clearLampe(){
+
+    public void clearLampe() {
         setRed((byte) 0);
         setGreen((byte) 0);
         setBlue((byte) 0);
@@ -82,5 +102,65 @@ public class Lampe {
 
     public int getChannel() {
         return channel;
+    }
+
+    public void setChannel(int channel) {
+        this.channel = channel;
+    }
+
+    public String[] getChannelData() {
+        return channelData;
+    }
+
+    public void setChannelData(String[] channelData) {
+        this.channelData = channelData;
+    }
+
+    public byte getWhite() {
+        return white;
+    }
+
+    public void setWhite(byte white) {
+        this.white = white;
+    }
+
+    public byte getPan() {
+        return pan;
+    }
+
+    public void setPan(byte pan) {
+        this.pan = pan;
+    }
+
+    public byte getTilt() {
+        return tilt;
+    }
+
+    public void setTilt(byte tilt) {
+        this.tilt = tilt;
+    }
+
+    public byte getDimmer() {
+        return dimmer;
+    }
+
+    public void setDimmer(byte dimmer) {
+        this.dimmer = dimmer;
+    }
+
+    public byte getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(byte speed) {
+        this.speed = speed;
+    }
+
+    public String[] getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String[] channelName) {
+        this.channelName = channelName;
     }
 }
