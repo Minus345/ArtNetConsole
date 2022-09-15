@@ -20,10 +20,6 @@ public class YamlManager {
 
         System.out.println(lampenTempletReader.toString());
 
-        for (String temp: lampenTempletReader.getChannelData()) {
-            System.out.println(temp);
-        }
-
         lampenTempletReader.createLamp();
     }
 }

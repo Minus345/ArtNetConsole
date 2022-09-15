@@ -11,9 +11,12 @@ public class Lampe {
     private byte blue;
     private byte white;
     private byte pan;
+    private byte panfein;
     private byte tilt;
+    private byte tiltfein;
     private byte dimmer;
     private byte speed;
+    private byte strobo;
     private final byte[] dmx;
 
     public Lampe(int id, String name, int channel, String[] channelData,String[] channelName ) {
@@ -37,6 +40,9 @@ public class Lampe {
                 case "green" -> dmx[i] = green;
                 case "blue" -> dmx[i] = blue;
                 case "speed" -> dmx[i] = speed;
+                case "strobo" -> dmx[i] = strobo;
+                case "panfein" -> dmx[i] = panfein;
+                case "tiltfein" -> dmx[i] = tiltfein;
                 case "custom" -> dmx[i] = 0;
             }
         }
@@ -46,6 +52,7 @@ public class Lampe {
         setRed((byte) 0);
         setGreen((byte) 0);
         setBlue((byte) 0);
+        setWhite((byte) 0);
     }
 
     public byte[] getDmx() {
@@ -162,5 +169,29 @@ public class Lampe {
 
     public void setChannelName(String[] channelName) {
         this.channelName = channelName;
+    }
+
+    public byte getStrobo() {
+        return strobo;
+    }
+
+    public void setStrobo(byte strobo) {
+        this.strobo = strobo;
+    }
+
+    public byte getPanfein() {
+        return panfein;
+    }
+
+    public void setPanfein(byte panfein) {
+        this.panfein = panfein;
+    }
+
+    public byte getTiltfein() {
+        return tiltfein;
+    }
+
+    public void setTiltfein(byte tiltfein) {
+        this.tiltfein = tiltfein;
     }
 }

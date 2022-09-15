@@ -20,23 +20,61 @@ public class LampActions {
                 System.out.println("Lampe gefunden");
                 modifyLampe(lampe);
                 Main.setSelectedLampe(lampe);
-            }else{
+            } else {
                 System.out.println("Lampe nicht gefunden");
             }
         }
     }
+
     //Effect auswahl über String in switch Effect
     public static void modifyLampe(Lampe lampe) throws IOException {
         while (true) {
-            System.out.println("Effect auswählen");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            String selection = reader.readLine();
-
-            switchEffect(selection,lampe);
+            channelData(lampe);
         }
     }
 
-    private static void switchEffect(String selection,Lampe lampe) throws IOException {
+    //Set Channell individual
+    private static void channelData(Lampe lampe) throws IOException {
+        System.out.println("Channel auswählen");
+        for (int i = 0; i <= (lampe.getChannelName().length - 1); i++) {
+            System.out.print(i + " : " + lampe.getChannelData()[i] + " | ");
+        }
+        System.out.println();
+
+        BufferedReader reader1 = new BufferedReader(new InputStreamReader(System.in));
+        String line = reader1.readLine();
+        switch (line) {
+            case "pan" -> lampe.setPan((byte) selectionParameter());
+            case "panfein" -> lampe.setPanfein((byte) selectionParameter());
+            case "til" -> lampe.setTilt((byte) selectionParameter());
+            case "tilfein" -> lampe.setTiltfein((byte) selectionParameter());
+            case "speed" -> lampe.setSpeed((byte) selectionParameter());
+            case "dimmer" -> lampe.setDimmer((byte) selectionParameter());
+            case "strobo" -> lampe.setStrobo((byte) selectionParameter());
+            case "red" -> lampe.setRed((byte) selectionParameter());
+            case "green" -> lampe.setGreen((byte) selectionParameter());
+            case "blue" -> lampe.setBlue((byte) selectionParameter());
+            case "white" -> lampe.setWhite((byte) selectionParameter());
+            case "e", "effect" -> switchEffect(lampe);
+            case "i", "info" -> {
+                for (int i = 0; i <= (lampe.getChannelName().length - 1); i++) {
+                    System.out.print(i + " : " + lampe.getChannelData()[i] + " : " + lampe.getChannelName()[i] + " | ");
+                }
+                System.out.println();
+            }
+            default -> System.out.println("Falsch geschrieben");
+        }
+    }
+
+    private static int selectionParameter() throws IOException {
+        System.out.println("Wert auswähle");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        return Integer.parseInt(reader.readLine());
+    }
+
+    private static void switchEffect(Lampe lampe) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String selection = reader.readLine();
         switch (selection) {
             case "data" -> {
                 channelData(lampe);
@@ -69,23 +107,5 @@ public class LampActions {
             case "clear" -> lampe.clearLampe();
             default -> System.out.println("Falsch geschrieben");
         }
-    }
-
-    private static void channelData(Lampe lampe) throws IOException {
-        System.out.println("Channel auswählen");
-        for (int i = 0; i <= (lampe.getChannelName().length - 1); i++){
-            System.out.println(i + " : " + lampe.getChannelName()[i]);
-        }
-        BufferedReader reader1 = new BufferedReader(new InputStreamReader(System.in));
-        String line = reader1.readLine();
-        switch (line){
-            case "pan" -> lampe.setPan((byte) selectionParameter());
-        }
-    }
-
-    private static int selectionParameter() throws IOException {
-        System.out.println("Wert auswähle");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        return Integer.parseInt(reader.readLine());
     }
 }
