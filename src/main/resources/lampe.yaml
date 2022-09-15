@@ -1,0 +1,31 @@
+---
+name: "meine Lampe"
+channel: 13
+channelData:
+  - pan
+  - panfein
+  - tilt
+  - tiltfein
+  - speed
+  - dimmer
+  - strobo
+  - red
+  - green
+  - blue
+  - white
+  - custom
+  - custom
+channelName:
+  - pan
+  - pan fein
+  - tilt
+  - tilt fein
+  - speed
+  - dimmer
+  - strobo
+  - red
+  - green
+  - blue
+  - white
+  - programme
+  - geschwindigkeit
