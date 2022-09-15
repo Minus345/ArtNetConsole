@@ -46,8 +46,8 @@ public class LampActions {
         switch (line) {
             case "pan" -> lampe.setPan((byte) selectionParameter());
             case "panfein" -> lampe.setPanfein((byte) selectionParameter());
-            case "til" -> lampe.setTilt((byte) selectionParameter());
-            case "tilfein" -> lampe.setTiltfein((byte) selectionParameter());
+            case "tilt" -> lampe.setTilt((byte) selectionParameter());
+            case "tiltfein" -> lampe.setTiltfein((byte) selectionParameter());
             case "speed" -> lampe.setSpeed((byte) selectionParameter());
             case "dimmer" -> lampe.setDimmer((byte) selectionParameter());
             case "strobo" -> lampe.setStrobo((byte) selectionParameter());
