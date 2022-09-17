@@ -39,6 +39,7 @@ public class Lampe {
                 case "red" -> dmx[i] = red;
                 case "green" -> dmx[i] = green;
                 case "blue" -> dmx[i] = blue;
+                case "white" -> dmx[i] = white;
                 case "speed" -> dmx[i] = speed;
                 case "strobo" -> dmx[i] = strobo;
                 case "panfein" -> dmx[i] = panfein;

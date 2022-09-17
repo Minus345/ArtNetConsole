@@ -1,5 +1,7 @@
 package com.console;
 
+import com.console.midi.MidiInputReceiver;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,8 +20,8 @@ public class LampActions {
             Lampe lampe = iterator.next();
             if (lampe.getId() == selection) {
                 System.out.println("Lampe gefunden");
-                modifyLampe(lampe);
                 Main.setSelectedLampe(lampe);
+                modifyLampe(lampe);
             } else {
                 System.out.println("Lampe nicht gefunden");
             }
@@ -61,6 +63,9 @@ public class LampActions {
                     System.out.print(i + " : " + lampe.getChannelData()[i] + " : " + lampe.getChannelName()[i] + " | ");
                 }
                 System.out.println();
+            }
+            case "midi" -> {
+
             }
             default -> System.out.println("Falsch geschrieben");
         }

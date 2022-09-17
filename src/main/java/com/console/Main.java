@@ -24,7 +24,7 @@ public class Main {
             System.out.println(networkInterface.getDisplayName() + " : " + networkInterface.getName() + "-------------" + networkInterface.getInterfaceAddresses() + "  " + networkInterface.getInetAddresses());
         }
 
-        NetworkInterface ni = NetworkInterface.getByName("eth7"); // interface name
+        NetworkInterface ni = NetworkInterface.getByName("eth6"); // interface name
         InetAddress address = ni.getInetAddresses().nextElement();
 
         System.out.println("Network Interface: " + ni.getName() + " | " + ni.getInetAddresses().nextElement() + " | " + ni.getInterfaceAddresses());
