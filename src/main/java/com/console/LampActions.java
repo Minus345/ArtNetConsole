@@ -15,15 +15,17 @@ public class LampActions {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         int selection = Integer.parseInt(reader.readLine());
 
-        Iterator<Lampe> iterator = Main.Lampen.iterator();
-        while (iterator.hasNext()) {
-            Lampe lampe = iterator.next();
-            if (lampe.getId() == selection) {
+        for (Lampe lampe : Main.Lampen) {
+            if(selection > Main.getLampen().size()){
+                System.out.println("die Lampe gibt es nicht");
+                selectLamp();
+            }
+            if (lampe.getId() == selection ) {
                 System.out.println("Lampe gefunden");
                 Main.setSelectedLampe(lampe);
                 modifyLampe(lampe);
             } else {
-                System.out.println("Lampe nicht gefunden");
+                 //System.out.println("Lampe nicht gefunden");
             }
         }
     }
@@ -67,6 +69,7 @@ public class LampActions {
             case "midi" -> {
 
             }
+            case "exit" -> selectLamp();
             default -> System.out.println("Falsch geschrieben");
         }
     }
@@ -80,6 +83,7 @@ public class LampActions {
     private static void switchEffect(Lampe lampe) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String selection = reader.readLine();
+        System.out.println("Effect:");
         switch (selection) {
             case "data" -> {
                 channelData(lampe);

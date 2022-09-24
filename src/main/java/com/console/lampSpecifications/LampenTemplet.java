@@ -1,18 +1,18 @@
-package com.console.yamlfile;
+package com.console.lampSpecifications;
 
 import com.console.Lampe;
 import com.console.Main;
 
 import java.util.Arrays;
 
-public class LampenTempletReader {
+public class LampenTemplet {
 
     private String name;
     private int channel;
     private String[] channelData = new String[channel];
     private String[] channelName = new String[channel];
 
-    public LampenTempletReader(String name, int channel, String[] channelData, String[] channelName) {
+    public LampenTemplet(String name, int channel, String[] channelData, String[] channelName) {
         this.name = name;
         this.channel = channel;
         this.channelData = channelData;
@@ -20,11 +20,11 @@ public class LampenTempletReader {
     }
 
     // Without a default constructor, Jackson will throw an exception
-    public LampenTempletReader() {
+    public LampenTemplet() {
     }
 
-    public void createLamp(){
-        Main.getLampen().add(new Lampe(1,name,channel,channelData,channelName));
+    public void createLamp(int id){
+        Main.getLampen().add(new Lampe(id,name,channel,channelData,channelName));
     }
 
     // Getters and setters

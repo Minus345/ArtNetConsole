@@ -1,5 +1,5 @@
 ---
-name: "meine Lampe"
+name: "pico beam"
 channel: 13
 channelData:
   - pan

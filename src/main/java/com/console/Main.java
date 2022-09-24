@@ -1,11 +1,10 @@
 package com.console;
 
 import com.console.midi.Midi;
-import com.console.yamlfile.YamlManager;
+import com.console.lampSpecifications.YamlManager;
+import com.console.patch.PatchReader;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.*;
@@ -30,9 +29,11 @@ public class Main {
         System.out.println("Network Interface: " + ni.getName() + " | " + ni.getInetAddresses().nextElement() + " | " + ni.getInterfaceAddresses());
 
         //Add Lampen
-        YamlManager.readFile();
+        PatchReader.readFile("patch.yaml");
+        //YamlManager.readFile("pico_beam.yaml",1);
+        //YamlManager.readFile("bar.yaml",2);
         //Lampen.add(new Lampe(2, "led", 3));
-
+        System.out.println("Amzahl der Lampen: " + Lampen.size());
         //Sort Lamps
         Lampen.sort(Comparator.comparingInt(Lampe::getId));
 
