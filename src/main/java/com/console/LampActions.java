@@ -1,6 +1,7 @@
 package com.console;
 
 import com.console.midi.MidiInputReceiver;
+import com.console.scene.ScenesReadAndWrite;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -70,6 +71,8 @@ public class LampActions {
 
             }
             case "exit" -> selectLamp();
+            case "save" -> ScenesReadAndWrite.saveScene();
+            case "write" -> ScenesReadAndWrite.write();
             default -> System.out.println("Falsch geschrieben");
         }
     }

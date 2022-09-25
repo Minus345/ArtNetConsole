@@ -1,8 +1,8 @@
 package com.console;
 
 import com.console.midi.Midi;
-import com.console.lampSpecifications.YamlManager;
 import com.console.patch.PatchReader;
+import com.console.scene.ScenesReadAndWrite;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -36,6 +36,8 @@ public class Main {
         System.out.println("Amzahl der Lampen: " + Lampen.size());
         //Sort Lamps
         Lampen.sort(Comparator.comparingInt(Lampe::getId));
+
+        //ScenesReadAndWrite.write();
 
         //Create Midi Device
         Midi midi = new Midi();
