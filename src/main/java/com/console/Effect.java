@@ -6,9 +6,12 @@ import java.util.Random;
 public class Effect {
     public static ArrayList<Lampe> changeColor = new ArrayList<>();
     public static ArrayList<Lampe> dimmerEffect = new ArrayList<>();
+    public static ArrayList<Lampe> circle = new ArrayList<>();
+
+    private static int i;
 
     public static void changeColor() {
-        if(changeColor == null) return;
+        if (changeColor == null) return;
         for (Lampe lampe : changeColor) {
             byte[] randomColor;
             randomColor = new byte[3];
@@ -19,12 +22,20 @@ public class Effect {
         }
     }
 
-    public static void dimmerEffect(){
-        if(dimmerEffect == null) return;
-        for (Lampe lampe:dimmerEffect){
-            lampe.setRed((byte) (lampe.getRed() + 1));
-            lampe.setGreen((byte) (lampe.getGreen() + 1));
-            lampe.setBlue((byte) (lampe.getBlue() + 1));
+    public static void dimmerEffect() {
+        if (dimmerEffect == null) return;
+        for (Lampe lampe : dimmerEffect) {
+            lampe.setDimmer((byte) (lampe.getDimmer() + 1));
+        }
+    }
+
+    public static void circle() throws InterruptedException {
+        for (int i = 0; i <= 356; i ++) {
+            for (Lampe lampe : circle) {
+                lampe.setPan((byte) (64 * Math.cos(i)));
+                lampe.setTilt((byte) (64 * Math.sin(i)));
+            }
+            Thread.sleep(100);
         }
     }
 }

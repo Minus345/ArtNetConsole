@@ -55,7 +55,12 @@ public class Main {
                 Effect.changeColor();
                 Effect.dimmerEffect();
                 try {
-                    Thread.sleep(100);
+                    Effect.circle();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

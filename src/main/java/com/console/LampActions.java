@@ -17,16 +17,16 @@ public class LampActions {
         int selection = Integer.parseInt(reader.readLine());
 
         for (Lampe lampe : Main.Lampen) {
-            if(selection > Main.getLampen().size()){
+            if (selection > Main.getLampen().size()) {
                 System.out.println("die Lampe gibt es nicht");
                 selectLamp();
             }
-            if (lampe.getId() == selection ) {
+            if (lampe.getId() == selection) {
                 System.out.println("Lampe gefunden");
                 Main.setSelectedLampe(lampe);
                 modifyLampe(lampe);
             } else {
-                 //System.out.println("Lampe nicht gefunden");
+                //System.out.println("Lampe nicht gefunden");
             }
         }
     }
@@ -84,9 +84,9 @@ public class LampActions {
     }
 
     private static void switchEffect(Lampe lampe) throws IOException {
+        System.out.println("Effect:");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String selection = reader.readLine();
-        System.out.println("Effect:");
         switch (selection) {
             case "data" -> {
                 channelData(lampe);
@@ -113,8 +113,27 @@ public class LampActions {
             }
             case "white" -> lampe.setWhite((byte) 255);
             case "dimmer" -> lampe.setDimmer((byte) 255);
-            case "changeColor" -> Effect.changeColor.add(lampe);
-            case "dimmerEffect" -> Effect.dimmerEffect.add(lampe);
+            case "changeColor" -> {
+                if (Effect.changeColor.contains(lampe)) {
+                    Effect.changeColor.remove(lampe);
+                }else {
+                    Effect.changeColor.add(lampe);
+                }
+            }
+            case "dimmerEffect" ->{
+                if (Effect.dimmerEffect.contains(lampe)){
+                    Effect.dimmerEffect.remove(lampe);
+                }else{
+                    Effect.dimmerEffect.add(lampe);
+                }
+            }
+            case "circle" ->{
+                if (Effect.circle.contains(lampe)){
+                    Effect.circle.remove(lampe);
+                }else{
+                    Effect.circle.add(lampe);
+                }
+            }
             case "exit" -> selectLamp();
             case "clear" -> lampe.clearLampe();
             default -> System.out.println("Falsch geschrieben");
