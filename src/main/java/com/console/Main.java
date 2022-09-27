@@ -37,7 +37,7 @@ public class Main {
         //Sort Lamps
         Lampen.sort(Comparator.comparingInt(Lampe::getId));
 
-        //ScenesReadAndWrite.write();
+        ScenesReadAndWrite.read();
 
         //Create Midi Device
         Midi midi = new Midi();
