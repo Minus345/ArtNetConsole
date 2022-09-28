@@ -16,6 +16,13 @@ public class LampActions {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         int selection = Integer.parseInt(reader.readLine());
 
+        if(selection == 0){
+            System.out.println("reading scene");
+            ScenesReadAndWrite.read();
+            selectLamp();
+            return;
+        }
+
         for (Lampe lampe : Main.Lampen) {
             if (selection > Main.getLampen().size()) {
                 System.out.println("die Lampe gibt es nicht");

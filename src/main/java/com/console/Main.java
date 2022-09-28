@@ -37,7 +37,6 @@ public class Main {
         //Sort Lamps
         Lampen.sort(Comparator.comparingInt(Lampe::getId));
 
-        ScenesReadAndWrite.read();
 
         //Create Midi Device
         Midi midi = new Midi();
@@ -47,6 +46,7 @@ public class Main {
         SendArtNet.tick(address); //192.168.178.131
         tick();
         LampActions.selectLamp();
+
     }
 
     public static void tick() {

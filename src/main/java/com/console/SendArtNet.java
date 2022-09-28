@@ -1,6 +1,7 @@
 package com.console;
 
 import ch.bildspur.artnet.ArtNetClient;
+import com.console.scene.ScenesReadAndWrite;
 
 import java.net.InetAddress;
 
@@ -21,6 +22,8 @@ public class SendArtNet {
             System.arraycopy(lampe.getDmx(),0,dmxData,positionDmxData,lampe.getChannel());
             positionDmxData = positionDmxData + lampe.getChannel();
         }
+
+        System.arraycopy(ScenesReadAndWrite.dmxSceneValue,0,dmxData,0,512);
 
         // artnet.unicastDmx("target", 0, 0, dmxData);
         artNetClient.broadcastDmx(0, 1, dmxData);
