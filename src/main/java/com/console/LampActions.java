@@ -1,24 +1,23 @@
 package com.console;
 
-import com.console.midi.MidiInputReceiver;
-import com.console.scene.ScenesReadAndWrite;
+import com.console.scene.Scene;
+import com.console.scene.Scenes;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Iterator;
 
 public class LampActions {
     //Lampen Auswahl über int
-    public static void selectLamp() throws IOException {
+    public static void selectLamp() throws IOException, InterruptedException {
         System.out.println("Lampen Id eigeben");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         int selection = Integer.parseInt(reader.readLine());
 
-        if(selection == 0){
+        if (selection == 0) {
             System.out.println("reading scene");
-            ScenesReadAndWrite.read();
+            Scenes.setSceneActiv(true);
+            Scenes.getActivScene().readStep();
             selectLamp();
             return;
         }
@@ -39,14 +38,14 @@ public class LampActions {
     }
 
     //Effect auswahl über String in switch Effect
-    public static void modifyLampe(Lampe lampe) throws IOException {
+    public static void modifyLampe(Lampe lampe) throws IOException, InterruptedException {
         while (true) {
             channelData(lampe);
         }
     }
 
     //Set Channell individual
-    private static void channelData(Lampe lampe) throws IOException {
+    private static void channelData(Lampe lampe) throws IOException, InterruptedException {
         System.out.println("Channel auswählen");
         for (int i = 0; i <= (lampe.getChannelName().length - 1); i++) {
             System.out.print(i + " : " + lampe.getChannelData()[i] + " | ");
@@ -78,8 +77,41 @@ public class LampActions {
 
             }
             case "exit" -> selectLamp();
-            case "save" -> ScenesReadAndWrite.saveScene();
-            case "write" -> ScenesReadAndWrite.write();
+            case "create" -> {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+                System.out.println("Name:");
+                Scenes.createScene(reader.readLine());
+            }
+            case "save" -> {
+                if(Scenes.getActivScene() == null) {
+                    System.out.println("keine Scene ausgewält");
+                    return;
+                }
+
+                System.out.println("Nummer: ");
+                int number = Integer.parseInt(getLine());
+                System.out.println("Übergangszeit: ");
+                int transitionTime = Integer.parseInt(getLine());
+                System.out.println("Wartezeit: ");
+                int stayTime = Integer.parseInt(getLine());
+
+                byte[] dmxData = new byte[512];
+                int positionDmxData = 0;
+
+                for (Lampe alampe : Main.getLampen()) {
+                    System.arraycopy(alampe.getDmx(), 0, dmxData, positionDmxData, alampe.getChannel());
+                    positionDmxData = positionDmxData + alampe.getChannel();
+                }
+
+                Scenes.getActivScene().addStep(number, transitionTime, stayTime, dmxData);
+
+            }
+            case "select" -> {
+                Scenes.setActivScene(Scenes.select(getLine()));
+            }
+            case "getselect" -> {
+                System.out.println(Scenes.getActivScene());
+            }
             default -> System.out.println("Falsch geschrieben");
         }
     }
@@ -90,7 +122,7 @@ public class LampActions {
         return Integer.parseInt(reader.readLine());
     }
 
-    private static void switchEffect(Lampe lampe) throws IOException {
+    private static void switchEffect(Lampe lampe) throws IOException, InterruptedException {
         System.out.println("Effect:");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String selection = reader.readLine();
@@ -123,21 +155,21 @@ public class LampActions {
             case "changeColor" -> {
                 if (Effect.changeColor.contains(lampe)) {
                     Effect.changeColor.remove(lampe);
-                }else {
+                } else {
                     Effect.changeColor.add(lampe);
                 }
             }
-            case "dimmerEffect" ->{
-                if (Effect.dimmerEffect.contains(lampe)){
+            case "dimmerEffect" -> {
+                if (Effect.dimmerEffect.contains(lampe)) {
                     Effect.dimmerEffect.remove(lampe);
-                }else{
+                } else {
                     Effect.dimmerEffect.add(lampe);
                 }
             }
-            case "circle" ->{
-                if (Effect.circle.contains(lampe)){
+            case "circle" -> {
+                if (Effect.circle.contains(lampe)) {
                     Effect.circle.remove(lampe);
-                }else{
+                } else {
                     Effect.circle.add(lampe);
                 }
             }
@@ -146,4 +178,11 @@ public class LampActions {
             default -> System.out.println("Falsch geschrieben");
         }
     }
+
+    public static String getLine() throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String line = reader.readLine();
+        return line;
+    }
+
 }

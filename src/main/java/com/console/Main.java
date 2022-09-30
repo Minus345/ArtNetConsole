@@ -2,7 +2,6 @@ package com.console;
 
 import com.console.midi.Midi;
 import com.console.patch.PatchReader;
-import com.console.scene.ScenesReadAndWrite;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -14,7 +13,7 @@ public class Main {
     public static ArrayList<Lampe> Lampen = new ArrayList<>();
     private static Lampe selectedLampe;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         System.out.println("Start");
 
         Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
