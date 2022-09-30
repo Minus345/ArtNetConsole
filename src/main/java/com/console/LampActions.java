@@ -75,8 +75,13 @@ public class LampActions {
             case "exit" -> selectLamp();
             case "create" -> {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-                System.out.println("Name:");
-                Scenes.createScene(reader.readLine());
+                System.out.println("Name:"); //String name,boolean loop, int loopCount
+                String name = reader.readLine();
+                System.out.println("loop: [true/false]");
+                boolean loop = Boolean.parseBoolean(reader.readLine());
+                System.out.println("loop Anzahl:");
+                int loopCount = Integer.parseInt(reader.readLine());
+                Scenes.createScene(name, loop, loopCount);
             }
             case "save" -> {
                 if (Scenes.getActivScene() == null) {

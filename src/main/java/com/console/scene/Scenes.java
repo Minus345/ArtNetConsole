@@ -7,15 +7,16 @@ public class Scenes {
     private static boolean sceneActiv;
     private static Scene activScene;
 
-    public static void createScene(String name){
-        Scene newScene = new Scene(name);
+    public static void createScene(String name, boolean loop, int loopCount) {
+        if(loop) loopCount = 10;
+        Scene newScene = new Scene(name, loop, loopCount);
         scenes.add(newScene);
         activScene = newScene;
     }
 
-    public static Scene select(String name){
-        for (Scene scene: scenes){
-            if (scene.getName().equals(name)){
+    public static Scene select(String name) {
+        for (Scene scene : scenes) {
+            if (scene.getName().equals(name)) {
                 System.out.println("Scene gefunden");
                 return scene;
             }
