@@ -16,8 +16,7 @@ public class LampActions {
 
         if (selection == 0) {
             System.out.println("reading scene");
-            Scenes.setSceneActiv(true);
-            Scenes.getActivScene().readStep();
+            startScene();
             selectLamp();
             return;
         }
@@ -73,9 +72,6 @@ public class LampActions {
                 }
                 System.out.println();
             }
-            case "midi" -> {
-
-            }
             case "exit" -> selectLamp();
             case "create" -> {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -83,7 +79,7 @@ public class LampActions {
                 Scenes.createScene(reader.readLine());
             }
             case "save" -> {
-                if(Scenes.getActivScene() == null) {
+                if (Scenes.getActivScene() == null) {
                     System.out.println("keine Scene ausgewält");
                     return;
                 }
@@ -109,8 +105,13 @@ public class LampActions {
             case "select" -> {
                 Scenes.setActivScene(Scenes.select(getLine()));
             }
-            case "getselect" -> {
-                System.out.println(Scenes.getActivScene());
+            case "getSelect" -> {
+                System.out.println(Scenes.getActivScene().getName());
+            }
+            case "getAllScenes" -> {
+                for (int i = 0; i < Scenes.scenes.size(); i++) {
+                    System.out.println(Scenes.scenes.get(i));
+                }
             }
             default -> System.out.println("Falsch geschrieben");
         }
@@ -181,8 +182,23 @@ public class LampActions {
 
     public static String getLine() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String line = reader.readLine();
-        return line;
+        return reader.readLine();
+    }
+
+    public static void startScene() throws InterruptedException, IOException {
+        System.out.println("Name:");
+        Scene scene = Scenes.select(getLine());
+        Scenes.setSceneActiv(true);
+        Runnable runnable = () -> {
+            try {
+                assert scene != null;
+                scene.read();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 
 }
