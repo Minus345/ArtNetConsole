@@ -2,6 +2,8 @@ package com.console;
 
 import com.console.midi.Midi;
 import com.console.patch.PatchReader;
+import com.console.scene.Scene;
+import com.console.scene.Scenes;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -44,8 +46,18 @@ public class Main {
         //Start Ticker
         SendArtNet.tick(address); //192.168.178.131
         tick();
-        LampActions.selectLamp();
 
+        Scenes.createScene("1", true, 0);
+        byte[] data1 = new byte[512];
+        Scenes.getActivScene().addStep(1, 5, 2, data1);
+        byte[] data2 = new byte[512];
+        data2[0] = (byte) 100;
+        Scenes.getActivScene().addStep(2, 5, 2, data2);
+        byte[] data3 = new byte[512];
+        data3[0] = (byte) 0;
+       // Scenes.getActivScene().addStep(3, 2, 2, data3);
+
+        LampActions.selectLamp();
     }
 
     public static void tick() {

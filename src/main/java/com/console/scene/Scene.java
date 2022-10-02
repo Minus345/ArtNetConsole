@@ -43,14 +43,20 @@ public class Scene {
             double x2;
             int a = step;
             int b = step;
+            int c = step;
 
-            if (step == (stepList.size() - 1)) {
+            if(step == stepList.size()){
                 step = 0;
-                a = step;
-                b = stepList.size() - 1;
+            }
+
+            if (step == (stepList.size() - 1)) { //------------Fehler  bei der zweiten ausführung
+                a = stepList.size() - 1;
+                b = 0;
+                c = stepList.size() - 1;
             } else {
                 a = step;
                 b = step + 1;
+                c = step;
             }
 
             for (int i = 0; i < 512; i++) {
@@ -59,9 +65,9 @@ public class Scene {
             for (int i = 0; i < 512; i++) {
                 dmxToFade[i] = Byte.toUnsignedInt(stepList.get(b).getDmxStep()[i]);
             }
-            x2 = (int) (stepList.get(step).getTransitionTime() / 0.025);
+            x2 = (int) (stepList.get(c).getTransitionTime() / 0.025);
 
-            for (int x = 0; x < x2; x++) { //übergangszeit
+            for (int x = 0; x <= x2; x++) { //übergangszeit
                 for (int i = 0; i < 512; i++) { //alle 512 channel
                     double dmxToFadeDouble = dmxToFade[i];
                     double dmxStartDouble = dmxStart[i];
@@ -74,7 +80,7 @@ public class Scene {
                 SendArtNet.sendScene(dmxResult);
                 Thread.sleep(25);
             }
-            Thread.sleep(stepList.get(step).getStayTime());
+            Thread.sleep(stepList.get(step).getStayTime() * 1000L);
             step++;
 
         }
