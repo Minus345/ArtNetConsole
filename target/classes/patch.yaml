@@ -1,0 +1,7 @@
+---
+name: "patch"
+universum: 1
+patchArray:
+  - "pico_beam.yaml"
+  - "bar.yaml"
+  - "pico_beam.yaml"

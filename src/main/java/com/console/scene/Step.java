@@ -4,7 +4,7 @@ public class Step {
     private int number;
     private int transitionTime;
     private int stayTime;
-    private byte[] dmxStep = new byte[512];
+    private byte[] dmxStep;
 
     public Step(int number, int transitionTime, int stayTime, byte[] dmxStep) {
         this.number = number;

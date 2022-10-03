@@ -1,0 +1,11 @@
+---
+name: "bar"
+channel: 3
+channelData:
+  - red
+  - green
+  - blue
+channelName:
+  - red
+  - green
+  - blue

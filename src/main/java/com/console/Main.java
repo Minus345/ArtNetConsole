@@ -2,7 +2,6 @@ package com.console;
 
 import com.console.midi.Midi;
 import com.console.patch.PatchReader;
-import com.console.scene.Scene;
 import com.console.scene.Scenes;
 
 import java.io.IOException;
@@ -53,9 +52,6 @@ public class Main {
         byte[] data2 = new byte[512];
         data2[0] = (byte) 100;
         Scenes.getActivScene().addStep(2, 5, 2, data2);
-        byte[] data3 = new byte[512];
-        data3[0] = (byte) 0;
-       // Scenes.getActivScene().addStep(3, 2, 2, data3);
 
         LampActions.selectLamp();
     }

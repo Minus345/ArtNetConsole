@@ -2,8 +2,6 @@ package com.console.scene;
 
 import com.console.SendArtNet;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.*;
 
 public class Scene {
@@ -41,11 +39,11 @@ public class Scene {
             int[] dmxStart = new int[512];
             int[] dmxToFade = new int[512];
             double x2;
-            int a = step;
-            int b = step;
-            int c = step;
+            int a;
+            int b;
+            int c;
 
-            if(step == stepList.size()){
+            if (step == stepList.size()) {
                 step = 0;
             }
 
