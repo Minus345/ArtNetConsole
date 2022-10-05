@@ -2,9 +2,10 @@ package com.console.scene;
 
 import com.console.SendArtNet;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Scene {
+public class Scene implements Serializable {
     private final String name;
     private final int loopCount;
     private final boolean loop;
@@ -47,7 +48,7 @@ public class Scene {
                 step = 0;
             }
 
-            if (step == (stepList.size() - 1)) { //------------Fehler  bei der zweiten ausführung
+            if (step == (stepList.size() - 1)) {
                 a = stepList.size() - 1;
                 b = 0;
                 c = stepList.size() - 1;

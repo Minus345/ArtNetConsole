@@ -8,15 +8,24 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class LampActions {
+
     /**
      * User Interface for the lamp
+     *
      * @throws IOException
      * @throws InterruptedException
      */
-    public static void selectLamp() throws IOException, InterruptedException {
+    public static void selectLamp() throws IOException, InterruptedException, ClassNotFoundException {
         System.out.println("Lampen Id eigeben");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        int selection = Integer.parseInt(reader.readLine());
+        String selectionString = reader.readLine();
+        int selection = 0;
+        try {
+            selection = Integer.parseInt(selectionString);
+        } catch (Exception e) {
+            System.out.println(e);
+            selectLamp();
+        }
 
         if (selection == 0) {
             sceneSettings();
@@ -38,39 +47,49 @@ public class LampActions {
 
     /**
      * User Interface for starting and stopping scenes
+     *
      * @throws IOException
      * @throws InterruptedException
      */
-    private static void sceneSettings() throws IOException, InterruptedException {
+    private static void sceneSettings() throws IOException, InterruptedException, ClassNotFoundException {
         System.out.println("Scene");
-        switch (getLine()){
-            case "start" ->{
+        switch (getLine()) {
+            case "start" -> {
                 System.out.println("Name:");
                 Scene scene = Scenes.select(getLine());
-                if (scene == null){
-                    selectLamp();
-                }else {
+                if (scene == null) {
+                    sceneSettings();
+                } else {
                     Scenes.startScene(scene);
                 }
             }
-            case "stop" ->{
+            case "stop" -> {
                 System.out.println("Name:");
                 Scene scene = Scenes.select(getLine());
-                if (scene == null){
-                    selectLamp();
-                }else {
-                    Scenes.stopScene(scene);
+                if (scene == null) {
+                    sceneSettings();
+                } else {
+                    if(Scenes.runningScenesArray.contains(scene)){
+                        Scenes.stopScene(scene);
+                    }else{
+                        System.out.println("Scene ist gerade nicht aktiv");
+                        sceneSettings();
+                    }
+
                 }
             }
+            case "save" -> Scenes.writeSceneToFile();
+            case "read" -> Scenes.readSceneFromFile();
+            case "exit" -> selectLamp();
             default -> {
                 System.out.println("Falsch Geschrieben");
-                selectLamp();
+                sceneSettings();
             }
         }
-        selectLamp();
+        sceneSettings();
     }
 
-    public static void modifyLampe(Lampe lampe) throws IOException, InterruptedException {
+    public static void modifyLampe(Lampe lampe) throws IOException, InterruptedException, ClassNotFoundException {
         while (true) {
             channelData(lampe);
         }
@@ -78,11 +97,12 @@ public class LampActions {
 
     /**
      * Set individual parameters per lamp
+     *
      * @param lampe
      * @throws IOException
      * @throws InterruptedException
      */
-    private static void channelData(Lampe lampe) throws IOException, InterruptedException {
+    private static void channelData(Lampe lampe) throws IOException, InterruptedException, ClassNotFoundException {
         System.out.println("Channel auswählen");
         for (int i = 0; i <= (lampe.getChannelName().length - 1); i++) {
             System.out.print(i + " : " + lampe.getChannelData()[i] + " | ");
@@ -120,6 +140,13 @@ public class LampActions {
                 System.out.println("loop Anzahl:");
                 int loopCount = Integer.parseInt(reader.readLine());
                 Scenes.createScene(name, loop, loopCount);
+            }
+            case "delete" ->{
+                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+                System.out.println("Name:");
+                String delete = reader.readLine();
+                Scenes.scenes.remove(delete);
+                delete = null;
             }
             case "save" -> {
                 if (Scenes.getActivScene() == null) {
@@ -159,6 +186,7 @@ public class LampActions {
 
     /**
      * Gets the parameter in the terminal
+     *
      * @return
      * @throws IOException
      */
@@ -170,11 +198,12 @@ public class LampActions {
 
     /**
      * add an effect to the lamp
+     *
      * @param lampe
      * @throws IOException
      * @throws InterruptedException
      */
-    private static void switchEffect(Lampe lampe) throws IOException, InterruptedException {
+    private static void switchEffect(Lampe lampe) throws IOException, InterruptedException, ClassNotFoundException {
         System.out.println("Effect:");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String selection = reader.readLine();
@@ -231,6 +260,7 @@ public class LampActions {
 
     /**
      * reads the courant line in the terminal
+     *
      * @return
      * @throws IOException
      */

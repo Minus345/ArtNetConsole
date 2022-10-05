@@ -1,5 +1,6 @@
 package com.console.scene;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -27,7 +28,13 @@ public class Scenes {
         return null;
     }
 
-    public static void manageScene(){
+    public static void startScene(Scene scene) {
+        runningScenesArray.add(scene);
+        Scenes.setSceneActiv(true);
+        manageScene();
+    }
+
+    public static void manageScene() {
         for (Scene runningScene : runningScenesArray) {
             Runnable runnable = () -> {
                 try {
@@ -42,12 +49,6 @@ public class Scenes {
         }
     }
 
-    public static void startScene(Scene scene) {
-        runningScenesArray.add(scene);
-        Scenes.setSceneActiv(true);
-        manageScene();
-    }
-
     public static void stopScene(Scene scene) {
         runningScenesArray.remove(scene);
         Objects.requireNonNull(getThreadByName(scene.getName())).stop();
@@ -59,6 +60,51 @@ public class Scenes {
             if (t.getName().equals(threadName)) return t;
         }
         return null;
+    }
+
+    public static void writeSceneToFile() {
+        System.out.println("File wird erstellt");
+        try {
+            for (int i = 0; i < scenes.size(); i++) {
+                FileOutputStream f = new FileOutputStream(scenes.get(i).getName() + ".txt");
+                ObjectOutputStream o = new ObjectOutputStream(f);
+
+                // Write objects to file
+                o.writeObject(scenes);
+
+                o.close();
+                f.close();
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        } catch (IOException e) {
+            System.out.println("Error initializing stream");
+        }
+    }
+
+    public static void readSceneFromFile() {
+        try {
+            FileInputStream fi = new FileInputStream(new File("1.txt"));
+            ObjectInputStream oi = new ObjectInputStream(fi);
+            // Read objects
+            ArrayList<Scene> deserializeScene = (ArrayList<Scene>) oi.readObject();
+            for (int i = 0; i < deserializeScene.size(); i++){
+                System.out.println(deserializeScene.get(i).getName());
+                scenes.add(deserializeScene.get(i));
+                System.out.println("Scene: " + deserializeScene.get(i).getName() + " wurde hinzugefügt");
+            }
+
+            oi.close();
+            fi.close();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        } catch (IOException e) {
+            System.out.println("Error initializing stream");
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     public static boolean isSceneActiv() {

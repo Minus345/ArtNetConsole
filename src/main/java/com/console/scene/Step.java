@@ -1,6 +1,8 @@
 package com.console.scene;
 
-public class Step {
+import java.io.Serializable;
+
+public class Step implements Serializable {
     private int number;
     private int transitionTime;
     private int stayTime;

@@ -14,7 +14,7 @@ public class Main {
     public static ArrayList<Lampe> Lampen = new ArrayList<>();
     private static Lampe selectedLampe;
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
         System.out.println("Start");
 
         Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
@@ -45,14 +45,14 @@ public class Main {
         //Start Ticker
         SendArtNet.tick(address); //192.168.178.131
         tick();
-
+/*
         Scenes.createScene("1", true, 0);
         byte[] data1 = new byte[512];
         Scenes.getActivScene().addStep(1, 5, 2, data1);
         byte[] data2 = new byte[512];
         data2[0] = (byte) 100;
         Scenes.getActivScene().addStep(2, 5, 2, data2);
-
+*/
         LampActions.selectLamp();
     }
 
