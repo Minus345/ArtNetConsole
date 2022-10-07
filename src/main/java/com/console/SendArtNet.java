@@ -11,8 +11,6 @@ public class SendArtNet {
     private static final byte[] dmxData = new byte[512];
     private static ArtNetClient artNetClient;
 
-    // TODO: 05.10.2022 Getter fon Allen Jetzt laufneden Szenen; die übernander legen (jeden channel addieren + user imput) dann senden
-
     public static void createArtNetController(InetAddress address) {
         artNetClient = new ArtNetClient();
         artNetClient.start(address);

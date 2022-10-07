@@ -55,6 +55,9 @@ public class Scenes {
     }
 
     public static void writeSceneToFile() {
+
+        // TODO fix directory for saving the scenes
+
         System.out.println("File wird erstellt");
         try {
             for (int i = 0; i < scenes.size(); i++) {
@@ -75,6 +78,7 @@ public class Scenes {
     }
 
     public static void readSceneFromFile() {
+        // TODO fix read from file
         try {
             FileInputStream fi = new FileInputStream("C:\\Users\\max\\Documents\\ArtNetConsole\\src\\main\\resources\\scenes\\1.lito");
             ObjectInputStream oi = new ObjectInputStream(fi);
@@ -94,7 +98,6 @@ public class Scenes {
         } catch (IOException e) {
             System.out.println("Error initializing stream");
         } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
