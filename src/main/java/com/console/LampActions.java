@@ -1,5 +1,6 @@
 package com.console;
 
+import com.console.lampSpecifications.Form;
 import com.console.scene.Scene;
 import com.console.scene.Scenes;
 
@@ -23,6 +24,9 @@ public class LampActions {
         try {
             selection = Integer.parseInt(selectionString);
         } catch (Exception e) {
+            if(selectionString.equalsIgnoreCase("create")){
+                new Form();
+            }
             System.out.println(e);
             selectLamp();
         }
