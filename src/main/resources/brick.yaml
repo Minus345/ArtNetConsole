@@ -1,0 +1,15 @@
+---
+name: "brick"
+channel: 5
+channelData:
+  - red
+  - green
+  - blue
+  - dimmer
+  - strobo
+channelName:
+  - red
+  - green
+  - blue
+  - dimmer
+  - strobo
