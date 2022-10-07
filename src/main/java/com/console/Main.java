@@ -2,7 +2,6 @@ package com.console;
 
 import com.console.midi.Midi;
 import com.console.patch.PatchReader;
-import com.console.scene.Scenes;
 
 import java.io.IOException;
 import java.net.InetAddress;

@@ -4,6 +4,7 @@ import ch.bildspur.artnet.ArtNetClient;
 import com.console.scene.Scenes;
 
 import java.net.InetAddress;
+import java.util.Arrays;
 
 public class SendArtNet {
 
@@ -17,23 +18,20 @@ public class SendArtNet {
         artNetClient.start(address);
     }
 
-    public static void sendScene(int[] dmx) {
-        byte[] newDmx = new byte[512];
-        for (int i = 0; i < 512; i++) {
-            newDmx[i] = (byte) dmx[i];
-        }
-        sendArtNetData(newDmx);
-    }
-
     public static void sendData() {
-        //1System.out.println("Sending Art Net");
-        if (Scenes.isSceneActiv()) return;
+        //if (Scenes.isSceneActiv()) return;
         int positionDmxData = 0;
         for (Lampe lampe : Main.getLampen()) {
             System.arraycopy(lampe.getDmx(), 0, dmxData, positionDmxData, lampe.getChannel());
             positionDmxData = positionDmxData + lampe.getChannel();
         }
+        for (int sceneNumber = 0; sceneNumber < Scenes.runningScenesArray.size(); sceneNumber++) {
+            for (int i = 0; i < 512; i++) {
+                dmxData[i] = (byte) (dmxData[i] + Scenes.runningScenesArray.get(sceneNumber).getFinishDmxData()[i]);
+            }
+        }
         sendArtNetData(dmxData);
+        Arrays.fill(dmxData, (byte) 0);
     }
 
     private static void sendArtNetData(byte[] data) {

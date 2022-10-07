@@ -10,6 +10,7 @@ public class Scene implements Serializable {
     private final int loopCount;
     private final boolean loop;
     private final ArrayList<Step> stepList = new ArrayList<>();
+    private byte[] finishDmxData = new byte[512];
 
     public Scene(String name, boolean loop, int loopCount) {
         this.name = name;
@@ -76,14 +77,24 @@ public class Scene implements Serializable {
                     y = m * x + t;
                     dmxResult[i] = (int) Math.round(y);
                 }
-                SendArtNet.sendScene(dmxResult);
+                ListToByteArray(dmxResult);
                 Thread.sleep(25);
             }
             Thread.sleep(stepList.get(step).getStayTime() * 1000L);
             step++;
 
         }
-        Scenes.setSceneActiv(false);
+        //Scenes.setSceneActiv(false);
+    }
+
+    public void ListToByteArray(int[] dmx) {
+        for (int i = 0; i < 512; i++) {
+            finishDmxData[i] = (byte) dmx[i];
+        }
+    }
+
+    public byte[] getFinishDmxData() {
+        return finishDmxData;
     }
 
     public String getName() {

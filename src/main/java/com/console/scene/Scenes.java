@@ -7,7 +7,6 @@ import java.util.Objects;
 public class Scenes {
     public static ArrayList<Scene> scenes = new ArrayList<>();
     public static ArrayList<Scene> runningScenesArray = new ArrayList<>();
-    private static boolean sceneActiv;
     private static Scene activScene;
 
     public static void createScene(String name, boolean loop, int loopCount) {
@@ -30,29 +29,22 @@ public class Scenes {
 
     public static void startScene(Scene scene) {
         runningScenesArray.add(scene);
-        Scenes.setSceneActiv(true);
-        manageScene();
-    }
+        Runnable runnable = () -> {
+            try {
+                scene.read();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.setName(scene.getName());
+        thread.start();
 
-    public static void manageScene() {
-        for (Scene runningScene : runningScenesArray) {
-            Runnable runnable = () -> {
-                try {
-                    runningScene.read();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            };
-            Thread thread = new Thread(runnable);
-            thread.setName(runningScene.getName());
-            thread.start();
-        }
     }
 
     public static void stopScene(Scene scene) {
         runningScenesArray.remove(scene);
         Objects.requireNonNull(getThreadByName(scene.getName())).stop();
-        Scenes.setSceneActiv(false);
     }
 
     public static Thread getThreadByName(String threadName) {
@@ -66,7 +58,7 @@ public class Scenes {
         System.out.println("File wird erstellt");
         try {
             for (int i = 0; i < scenes.size(); i++) {
-                FileOutputStream f = new FileOutputStream(scenes.get(i).getName() + ".txt");
+                FileOutputStream f = new FileOutputStream(scenes.get(i).getName() + ".lito");
                 ObjectOutputStream o = new ObjectOutputStream(f);
 
                 // Write objects to file
@@ -84,11 +76,11 @@ public class Scenes {
 
     public static void readSceneFromFile() {
         try {
-            FileInputStream fi = new FileInputStream(new File("1.txt"));
+            FileInputStream fi = new FileInputStream("C:\\Users\\max\\Documents\\ArtNetConsole\\src\\main\\resources\\scenes\\1.lito");
             ObjectInputStream oi = new ObjectInputStream(fi);
             // Read objects
             ArrayList<Scene> deserializeScene = (ArrayList<Scene>) oi.readObject();
-            for (int i = 0; i < deserializeScene.size(); i++){
+            for (int i = 0; i < deserializeScene.size(); i++) {
                 System.out.println(deserializeScene.get(i).getName());
                 scenes.add(deserializeScene.get(i));
                 System.out.println("Scene: " + deserializeScene.get(i).getName() + " wurde hinzugefügt");
@@ -105,14 +97,6 @@ public class Scenes {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-    }
-
-    public static boolean isSceneActiv() {
-        return sceneActiv;
-    }
-
-    public static void setSceneActiv(boolean sceneActiv) {
-        Scenes.sceneActiv = sceneActiv;
     }
 
     public static Scene getActivScene() {
