@@ -1,7 +1,5 @@
 package com.console.scene;
 
-import com.console.SendArtNet;
-
 import java.io.Serializable;
 import java.util.*;
 
@@ -10,7 +8,7 @@ public class Scene implements Serializable {
     private final int loopCount;
     private final boolean loop;
     private final ArrayList<Step> stepList = new ArrayList<>();
-    private byte[] finishDmxData = new byte[512];
+    private final byte[] finishDmxData = new byte[512];
 
     public Scene(String name, boolean loop, int loopCount) {
         this.name = name;
@@ -78,9 +76,18 @@ public class Scene implements Serializable {
                     dmxResult[i] = (int) Math.round(y);
                 }
                 ListToByteArray(dmxResult);
-                Thread.sleep(25);
+                try {
+                    Thread.sleep(25);
+                }catch (InterruptedException interruptedException){
+                    System.out.println("Interupted");
+                }
+
             }
-            Thread.sleep(stepList.get(step).getStayTime() * 1000L);
+            try {
+                Thread.sleep(stepList.get(step).getStayTime() * 1000L);
+            }catch (InterruptedException interruptedException){
+                System.out.println("Interupted");
+            }
             step++;
 
         }

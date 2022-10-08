@@ -6,6 +6,7 @@ import com.console.scene.Scenes;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 public class LampActions {
 
@@ -16,6 +17,9 @@ public class LampActions {
         System.out.println("Lampen Id eigeben");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String selectionString = reader.readLine();
+        if (Objects.equals(selectionString, "scene")) {
+            sceneSettings();
+        }
         int selection = 0;
         try {
             selection = Integer.parseInt(selectionString);
@@ -97,9 +101,6 @@ public class LampActions {
     /**
      * Set individual parameters per lamp
      *
-     * @param lampe
-     * @throws IOException
-     * @throws InterruptedException
      */
     private static void channelData(Lampe lampe) throws IOException, InterruptedException, ClassNotFoundException {
         System.out.println("Channel auswählen");

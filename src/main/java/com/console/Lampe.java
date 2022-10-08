@@ -19,6 +19,8 @@ public class Lampe {
     private byte strobo;
     private final byte[] dmx;
 
+    //TODO matrix lampen (mit mehreren farben); gobos; shutter
+
     public Lampe(int id, String name, int channel, String[] channelData,String[] channelName ) {
         this.id = id;
         this.name = name;

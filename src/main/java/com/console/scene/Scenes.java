@@ -44,7 +44,7 @@ public class Scenes {
 
     public static void stopScene(Scene scene) {
         runningScenesArray.remove(scene);
-        Objects.requireNonNull(getThreadByName(scene.getName())).stop();
+        Objects.requireNonNull(getThreadByName(scene.getName())).interrupt();
     }
 
     public static Thread getThreadByName(String threadName) {
@@ -55,21 +55,18 @@ public class Scenes {
     }
 
     public static void writeSceneToFile() {
-
-        // TODO fix directory for saving the scenes
-
         System.out.println("File wird erstellt");
         try {
-            for (int i = 0; i < scenes.size(); i++) {
-                FileOutputStream f = new FileOutputStream(scenes.get(i).getName() + ".lito");
-                ObjectOutputStream o = new ObjectOutputStream(f);
+            //for (int i = 0; i < scenes.size(); i++) {
+            FileOutputStream f = new FileOutputStream("scenes.lito");
+            ObjectOutputStream o = new ObjectOutputStream(f);
 
-                // Write objects to file
-                o.writeObject(scenes);
+            // Write objects to file
+            o.writeObject(scenes);
 
-                o.close();
-                f.close();
-            }
+            o.close();
+            f.close();
+            //}
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
         } catch (IOException e) {
@@ -78,14 +75,12 @@ public class Scenes {
     }
 
     public static void readSceneFromFile() {
-        // TODO fix read from file
         try {
-            FileInputStream fi = new FileInputStream("C:\\Users\\max\\Documents\\ArtNetConsole\\src\\main\\resources\\scenes\\1.lito");
+            FileInputStream fi = new FileInputStream("scenes.lito");
             ObjectInputStream oi = new ObjectInputStream(fi);
             // Read objects
             ArrayList<Scene> deserializeScene = (ArrayList<Scene>) oi.readObject();
             for (int i = 0; i < deserializeScene.size(); i++) {
-                System.out.println(deserializeScene.get(i).getName());
                 scenes.add(deserializeScene.get(i));
                 System.out.println("Scene: " + deserializeScene.get(i).getName() + " wurde hinzugefügt");
             }
