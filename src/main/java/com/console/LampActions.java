@@ -137,8 +137,13 @@ public class LampActions {
                 String name = reader.readLine();
                 System.out.println("loop: [true/false]");
                 boolean loop = Boolean.parseBoolean(reader.readLine());
-                System.out.println("loop Anzahl:");
-                int loopCount = Integer.parseInt(reader.readLine());
+                int loopCount;
+                if (!loop){
+                    System.out.println("loop Anzahl:");
+                    loopCount = Integer.parseInt(reader.readLine());
+                }else {
+                    loopCount = 10;
+                }
                 Scenes.createScene(name, loop, loopCount);
             }
             case "delete" -> {
@@ -149,7 +154,7 @@ public class LampActions {
                 delete = null;
             }
             case "save" -> {
-                if (Scenes.getActivScene() == null) {
+                if (Scenes.getActiveScene() == null) {
                     System.out.println("keine Scene ausgewält");
                     return;
                 }
@@ -169,12 +174,12 @@ public class LampActions {
                     positionDmxData = positionDmxData + alampe.getChannel();
                 }
 
-                Scenes.getActivScene().addStep(number, transitionTime, stayTime, dmxData);
+                Scenes.getActiveScene().addStep(number, transitionTime, stayTime, dmxData);
 
             }
-            case "select" -> Scenes.setActivScene(Scenes.select(getLine()));
+            case "select" -> Scenes.setActiveScene(Scenes.select(getLine()));
 
-            case "getSelect" -> System.out.println(Scenes.getActivScene().getName());
+            case "getSelect" -> System.out.println(Scenes.getActiveScene().getName());
             case "getAllScenes" -> {
                 for (int i = 0; i < Scenes.scenes.size(); i++) {
                     System.out.println(Scenes.scenes.get(i));

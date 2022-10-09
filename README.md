@@ -24,3 +24,7 @@ Using ArtNet as outgoing protocoll.
     - Terminal based
 ## Todo
 - Web Interface
+
+## Start Arguments
+ ` java - jar ArtNetConsole [path to patch file] [path to scene directory] [path to scenes save]`
+

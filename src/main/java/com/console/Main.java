@@ -6,12 +6,14 @@ import com.console.patch.PatchReader;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.nio.file.Path;
 import java.util.*;
 
 public class Main {
 
     public static ArrayList<Lampe> Lampen = new ArrayList<>();
     private static Lampe selectedLampe;
+    private static String sceneSavePath;
 
     public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
         System.out.println("Start");
@@ -28,14 +30,13 @@ public class Main {
         System.out.println("Network Interface: " + ni.getName() + " | " + ni.getInetAddresses().nextElement() + " | " + ni.getInterfaceAddresses());
 
         //Add Lampen
-        PatchReader.readFile("patch.yaml");
-        //YamlManager.readFile("pico_beam.yaml",1);
-        //YamlManager.readFile("bar.yaml",2);
-        //Lampen.add(new Lampe(2, "led", 3));
+        PatchReader.readFile(args[0], args[1]);
         System.out.println("Amzahl der Lampen: " + Lampen.size());
         //Sort Lamps
         Lampen.sort(Comparator.comparingInt(Lampe::getId));
 
+        //Get save file path
+         setSceneSavePath(args[2]);
 
         //Create Midi Device
         Midi midi = new Midi();
@@ -44,14 +45,7 @@ public class Main {
         //Start Ticker
         SendArtNet.tick(address); //192.168.178.131
         tick();
-/*
-        Scenes.createScene("1", true, 0);
-        byte[] data1 = new byte[512];
-        Scenes.getActivScene().addStep(1, 5, 2, data1);
-        byte[] data2 = new byte[512];
-        data2[0] = (byte) 100;
-        Scenes.getActivScene().addStep(2, 5, 2, data2);
-*/
+
         LampActions.selectLamp();
     }
 
@@ -86,5 +80,13 @@ public class Main {
 
     public static void setSelectedLampe(Lampe selectedLampe) {
         Main.selectedLampe = selectedLampe;
+    }
+
+    public static String getSceneSavePath() {
+        return sceneSavePath;
+    }
+
+    public static void setSceneSavePath(String sceneSavePath) {
+        Main.sceneSavePath = sceneSavePath;
     }
 }

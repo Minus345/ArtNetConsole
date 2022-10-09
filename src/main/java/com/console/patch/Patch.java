@@ -14,9 +14,9 @@ public class Patch {
     public Patch() {
     }
 
-    public void readLampsFormFile() throws IOException {
+    public void readLampsFormFile(String path) throws IOException {
         for (int i = 0; i <= (patchArray.length - 1); i++) {
-            YamlManager.readFile(patchArray[i],(i + 1));
+            YamlManager.readFile(path + "\\" + patchArray[i],(i + 1));
         }
     }
 

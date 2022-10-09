@@ -89,9 +89,7 @@ public class Scene implements Serializable {
                 System.out.println("Interupted");
             }
             step++;
-
         }
-        //Scenes.setSceneActiv(false);
     }
 
     public void ListToByteArray(int[] dmx) {
