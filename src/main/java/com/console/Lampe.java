@@ -82,10 +82,10 @@ public class Lampe {
     }
 
     public void clearLampe() {
-        setRed((byte) 0, 1);
-        setGreen((byte) 0, 1);
-        setBlue((byte) 0, 1);
-        setWhite((byte) 0, 1);
+        setRed((byte) 0, -1);
+        setGreen((byte) 0, -1);
+        setBlue((byte) 0, -1);
+        setWhite((byte) 0, -1);
     }
 
     public byte[] getDmx() {
@@ -110,30 +110,34 @@ public class Lampe {
     }
 
     public void setRed(byte red, int matrix) {
-        if (matrix == 0) {
+        if (matrix == -1) {
             Collections.fill(this.red, red);
+        } else {
+            this.red.set(matrix, red);
         }
-        this.red.set(matrix, red);
     }
 
     public void setGreen(byte green, int matrix) {
-        if (matrix == 0) {
+        if (matrix == -1) {
             Collections.fill(this.green, green);
+        } else {
+            this.green.set(matrix, green);
         }
-        this.green.set(matrix, green);
     }
 
     public void setBlue(byte blue, int matrix) {
-        if (matrix == 0) {
+        if (matrix == -1) {
             Collections.fill(this.blue, blue);
+        } else {
+            this.blue.set(matrix, blue);
         }
-        this.blue.set(matrix, blue);
     }
 
     public void setWhite(byte white, int matrix) {
-        this.white.set(matrix, white);
-        if (matrix == 0) {
+        if (matrix == -1) {
             Collections.fill(this.white, white);
+        } else {
+            this.white.set(matrix, white);
         }
     }
 

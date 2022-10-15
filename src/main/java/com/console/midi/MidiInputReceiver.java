@@ -26,8 +26,6 @@ public class MidiInputReceiver implements Receiver {
         System.out.println();
 
          */
-
-
         if (Main.getSelectedLampe() == null) {
             System.out.println("keine Lampe festgelegt");
             return;
@@ -46,9 +44,6 @@ public class MidiInputReceiver implements Receiver {
                 }
             }
         }
-        //System.out.println("Receive Midi");
-        //System.out.println("Receive Midi");
-
     }
 
     public void close() {

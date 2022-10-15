@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class LampActions {
 
-    private static int matrix = 0;
+    private static int matrix = -1;
 
     /**
      * User Interface for the lamp
@@ -23,14 +23,13 @@ public class LampActions {
         if (Objects.equals(selectionString, "scene")) {
             sceneSettings();
         }
-        if (Objects.equals(selectionString, "patch")){
+        if (Objects.equals(selectionString, "patch")) {
             PatchWriter.writePatch();
         }
         int selection = 0;
         try {
             selection = Integer.parseInt(selectionString);
         } catch (Exception e) {
-            System.out.println(e);
             selectLamp();
         }
 
@@ -132,7 +131,8 @@ public class LampActions {
             case "dimmer" -> lampe.setDimmer((byte) selectionParameter());
             case "shutter" -> lampe.setShutter((byte) selectionParameter());
             case "strobo" -> lampe.setStrobo((byte) selectionParameter());
-            case "matrix" -> matrix = selectionParameter() - 1;
+            case "matrix", "m" -> matrix = selectionParameter() - 1;
+            case "matrixAll", "ma" -> matrix = -1;
             case "red" -> lampe.setRed((byte) selectionParameter(), matrix);
             case "green" -> lampe.setGreen((byte) selectionParameter(), matrix);
             case "blue" -> lampe.setBlue((byte) selectionParameter(), matrix);
@@ -140,7 +140,7 @@ public class LampActions {
             case "gobo" -> {
                 System.out.println("Gobo Rad:");
                 int goboCount = Integer.parseInt(getLine());
-                lampe.setGobo((byte) selectionParameter(),goboCount);
+                lampe.setGobo((byte) selectionParameter(), goboCount);
             }
             case "e", "effect" -> switchEffect(lampe);
             case "i", "info" -> {
@@ -149,6 +149,7 @@ public class LampActions {
                 }
                 System.out.println();
             }
+            case "clear" -> lampe.clearLampe();
             case "exit" -> selectLamp();
             case "create" -> {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -190,7 +191,6 @@ public class LampActions {
 
             }
             case "select" -> Scenes.setActiveScene(Scenes.select(getLine()));
-
             case "getSelect" -> System.out.println(Scenes.getActiveScene().getName());
             case "getAllScenes" -> {
                 for (int i = 0; i < Scenes.scenes.size(); i++) {
@@ -199,18 +199,6 @@ public class LampActions {
             }
             default -> System.out.println("Falsch geschrieben");
         }
-    }
-
-    /**
-     * Gets the parameter in the terminal
-     *
-     * @return
-     * @throws IOException
-     */
-    private static int selectionParameter() throws IOException {
-        System.out.println("Wert auswähle");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        return Integer.parseInt(reader.readLine());
     }
 
     /**
@@ -227,26 +215,26 @@ public class LampActions {
         switch (selection) {
             case "data" -> channelData(lampe);
             case "r" -> {
-                lampe.setRed((byte) 255, 1);
-                lampe.setGreen((byte) 0,1);
-                lampe.setBlue((byte) 0,1);
+                lampe.setRed((byte) 255, 0);
+                lampe.setGreen((byte) 0, 0);
+                lampe.setBlue((byte) 0, 0);
             }
             case "g" -> {
-                lampe.setRed((byte) 0, 1);
-                lampe.setGreen((byte) 255,1);
-                lampe.setBlue((byte) 0,1);
+                lampe.setRed((byte) 0, 0);
+                lampe.setGreen((byte) 255, 0);
+                lampe.setBlue((byte) 0, 0);
             }
             case "b" -> {
-                lampe.setRed((byte) 0, 1);
-                lampe.setGreen((byte) 0,1);
-                lampe.setBlue((byte) 255,1);
+                lampe.setRed((byte) 0, 0);
+                lampe.setGreen((byte) 0, 0);
+                lampe.setBlue((byte) 255, 0);
             }
             case "w" -> {
-                lampe.setRed((byte) 255, 1);
-                lampe.setGreen((byte) 255,1);
-                lampe.setBlue((byte) 255,1);
+                lampe.setRed((byte) 255, 0);
+                lampe.setGreen((byte) 255, 0);
+                lampe.setBlue((byte) 255, 0);
             }
-            case "white" -> lampe.setWhite((byte) 255, matrix);
+            case "white" -> lampe.setWhite((byte) 255, 0);
             case "dimmer" -> lampe.setDimmer((byte) 255);
             case "changeColor" -> {
                 if (Effect.changeColor.contains(lampe)) {
@@ -269,10 +257,46 @@ public class LampActions {
                     Effect.circle.add(lampe);
                 }
             }
+            case "matrix" -> {
+                if (Effect.matrixBounce.contains(lampe)) {
+                    Effect.matrixBounce.remove(lampe);
+                } else {
+                    Effect.matrixBounce.add(lampe);
+                }
+                System.out.println("red:");
+                byte r = Byte.parseByte(getLine());
+                System.out.println("green:");
+                byte g = Byte.parseByte(getLine());
+                System.out.println("blue:");
+                byte b = Byte.parseByte(getLine());
+                System.out.println("white:");
+                byte w = Byte.parseByte(getLine());
+                System.out.println("Starting");
+                Runnable runnable = () -> {
+                    try {
+                        Effect.matrixBounce(r, g, b, w);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                };
+                Thread thread = new Thread(runnable);
+                thread.start();
+            }
             case "exit" -> selectLamp();
-            case "clear" -> lampe.clearLampe();
             default -> System.out.println("Falsch geschrieben");
         }
+    }
+
+    /**
+     * Gets the parameter in the terminal
+     *
+     * @return
+     * @throws IOException
+     */
+    private static int selectionParameter() throws IOException {
+        System.out.println("Wert auswähle");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        return Integer.parseInt(reader.readLine());
     }
 
     /**
