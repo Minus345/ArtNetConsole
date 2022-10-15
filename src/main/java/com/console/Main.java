@@ -6,7 +6,6 @@ import com.console.patch.PatchReader;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.nio.file.Path;
 import java.util.*;
 
 public class Main {
@@ -24,19 +23,19 @@ public class Main {
             System.out.println(networkInterface.getDisplayName() + " : " + networkInterface.getName() + "-------------" + networkInterface.getInterfaceAddresses() + "  " + networkInterface.getInetAddresses());
         }
 
-        NetworkInterface ni = NetworkInterface.getByName("eth6"); // interface name
+        NetworkInterface ni = NetworkInterface.getByName(args[0]); // interface name
         InetAddress address = ni.getInetAddresses().nextElement();
 
         System.out.println("Network Interface: " + ni.getName() + " | " + ni.getInetAddresses().nextElement() + " | " + ni.getInterfaceAddresses());
 
         //Add Lampen
-        PatchReader.readFile(args[0], args[1]);
+        PatchReader.readFile(args[1], args[2]);
         System.out.println("Amzahl der Lampen: " + Lampen.size());
         //Sort Lamps
         Lampen.sort(Comparator.comparingInt(Lampe::getId));
 
         //Get save file path
-         setSceneSavePath(args[2]);
+         setSceneSavePath(args[3]);
 
         //Create Midi Device
         Midi midi = new Midi();
