@@ -11,6 +11,8 @@ public class Scenes {
     public static ArrayList<Scene> runningScenesArray = new ArrayList<>();
     private static Scene activeScene;
 
+    //TODO Scene Löschen
+
     /**
      * creates the scene with the parameters
      * @param name name

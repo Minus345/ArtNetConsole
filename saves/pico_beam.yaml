@@ -1,6 +1,7 @@
 ---
 name: "pico beam"
 channel: 13
+rgbmatrix: 1
 channelData:
   - pan
   - panfein
@@ -9,10 +10,10 @@ channelData:
   - speed
   - dimmer
   - strobo
-  - red
-  - green
-  - blue
-  - white
+  - red:1
+  - green:1
+  - blue:1
+  - white:1
   - custom
   - custom
 channelName:

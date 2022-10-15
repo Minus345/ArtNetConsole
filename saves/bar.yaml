@@ -1,11 +1,54 @@
 ---
 name: "bar"
-channel: 3
+channel: 24
+rgbmatrix: 8
 channelData:
-  - red
-  - green
-  - blue
+  - red:1
+  - green:1
+  - blue:1
+  - red:2
+  - green:2
+  - blue:2
+  - red:3
+  - green:3
+  - blue:3
+  - red:4
+  - green:4
+  - blue:4
+  - red:5
+  - green:5
+  - blue:5
+  - red:6
+  - green:6
+  - blue:6
+  - red:7
+  - green:7
+  - blue:7
+  - red:8
+  - green:8
+  - blue:8
 channelName:
-  - red
-  - green
-  - blue
+  - red1
+  - green1
+  - blue1
+  - red2
+  - green2
+  - blue2
+  - red3
+  - green3
+  - blue3
+  - red4
+  - green4
+  - blue4
+  - red5
+  - green5
+  - blue5
+  - red6
+  - green6
+  - blue6
+  - red7
+  - green7
+  - blue7
+  - red8
+  - green8
+  - blue8

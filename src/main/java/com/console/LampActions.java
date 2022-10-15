@@ -1,5 +1,6 @@
 package com.console;
 
+import com.console.patch.PatchWriter;
 import com.console.scene.Scene;
 import com.console.scene.Scenes;
 
@@ -10,15 +11,20 @@ import java.util.Objects;
 
 public class LampActions {
 
+    private static int matrix = 0;
+
     /**
      * User Interface for the lamp
      */
     public static void selectLamp() throws IOException, InterruptedException, ClassNotFoundException {
-        System.out.println("Lampen Id eigeben");
+        System.out.println("Action Eingeben: [Lamp ID]/ \"scene\" / \"patch\"");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String selectionString = reader.readLine();
         if (Objects.equals(selectionString, "scene")) {
             sceneSettings();
+        }
+        if (Objects.equals(selectionString, "patch")){
+            PatchWriter.writePatch();
         }
         int selection = 0;
         try {
@@ -50,7 +56,7 @@ public class LampActions {
      * User Interface for starting and stopping scenes
      */
     private static void sceneSettings() throws IOException, InterruptedException, ClassNotFoundException {
-        System.out.println("Scene");
+        System.out.println("Scene: \"start\" / \"stop\" / \"delete\" / \"getActive\" / \"save\" / \"read\" / \"exit\"");
         switch (getLine()) {
             case "start" -> {
                 System.out.println("Name:");
@@ -76,6 +82,13 @@ public class LampActions {
 
                 }
             }
+            case "delete" -> {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+                System.out.println("Name:");
+                String delete = reader.readLine();
+                Scenes.scenes.remove(delete);
+                delete = null;
+            }
             case "getActiv" -> {
                 for (int i = 0; i < Scenes.runningScenesArray.size(); i++) {
                     System.out.println(Scenes.runningScenesArray.get(i).getName());
@@ -100,7 +113,6 @@ public class LampActions {
 
     /**
      * Set individual parameters per lamp
-     *
      */
     private static void channelData(Lampe lampe) throws IOException, InterruptedException, ClassNotFoundException {
         System.out.println("Channel auswählen");
@@ -118,11 +130,18 @@ public class LampActions {
             case "tiltfein" -> lampe.setTiltfein((byte) selectionParameter());
             case "speed" -> lampe.setSpeed((byte) selectionParameter());
             case "dimmer" -> lampe.setDimmer((byte) selectionParameter());
+            case "shutter" -> lampe.setShutter((byte) selectionParameter());
             case "strobo" -> lampe.setStrobo((byte) selectionParameter());
-            case "red" -> lampe.setRed((byte) selectionParameter());
-            case "green" -> lampe.setGreen((byte) selectionParameter());
-            case "blue" -> lampe.setBlue((byte) selectionParameter());
-            case "white" -> lampe.setWhite((byte) selectionParameter());
+            case "matrix" -> matrix = selectionParameter() - 1;
+            case "red" -> lampe.setRed((byte) selectionParameter(), matrix);
+            case "green" -> lampe.setGreen((byte) selectionParameter(), matrix);
+            case "blue" -> lampe.setBlue((byte) selectionParameter(), matrix);
+            case "white" -> lampe.setWhite((byte) selectionParameter(), matrix);
+            case "gobo" -> {
+                System.out.println("Gobo Rad:");
+                int goboCount = Integer.parseInt(getLine());
+                lampe.setGobo((byte) selectionParameter(),goboCount);
+            }
             case "e", "effect" -> switchEffect(lampe);
             case "i", "info" -> {
                 for (int i = 0; i <= (lampe.getChannelName().length - 1); i++) {
@@ -138,20 +157,13 @@ public class LampActions {
                 System.out.println("loop: [true/false]");
                 boolean loop = Boolean.parseBoolean(reader.readLine());
                 int loopCount;
-                if (!loop){
+                if (!loop) {
                     System.out.println("loop Anzahl:");
                     loopCount = Integer.parseInt(reader.readLine());
-                }else {
+                } else {
                     loopCount = 10;
                 }
                 Scenes.createScene(name, loop, loopCount);
-            }
-            case "delete" -> {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-                System.out.println("Name:");
-                String delete = reader.readLine();
-                Scenes.scenes.remove(delete);
-                delete = null;
             }
             case "save" -> {
                 if (Scenes.getActiveScene() == null) {
@@ -215,26 +227,26 @@ public class LampActions {
         switch (selection) {
             case "data" -> channelData(lampe);
             case "r" -> {
-                lampe.setRed((byte) 255);
-                lampe.setGreen((byte) 0);
-                lampe.setBlue((byte) 0);
+                lampe.setRed((byte) 255, 1);
+                lampe.setGreen((byte) 0,1);
+                lampe.setBlue((byte) 0,1);
             }
             case "g" -> {
-                lampe.setRed((byte) 0);
-                lampe.setGreen((byte) 255);
-                lampe.setBlue((byte) 0);
+                lampe.setRed((byte) 0, 1);
+                lampe.setGreen((byte) 255,1);
+                lampe.setBlue((byte) 0,1);
             }
             case "b" -> {
-                lampe.setRed((byte) 0);
-                lampe.setGreen((byte) 0);
-                lampe.setBlue((byte) 255);
+                lampe.setRed((byte) 0, 1);
+                lampe.setGreen((byte) 0,1);
+                lampe.setBlue((byte) 255,1);
             }
             case "w" -> {
-                lampe.setRed((byte) 255);
-                lampe.setGreen((byte) 255);
-                lampe.setBlue((byte) 255);
+                lampe.setRed((byte) 255, 1);
+                lampe.setGreen((byte) 255,1);
+                lampe.setBlue((byte) 255,1);
             }
-            case "white" -> lampe.setWhite((byte) 255);
+            case "white" -> lampe.setWhite((byte) 255, matrix);
             case "dimmer" -> lampe.setDimmer((byte) 255);
             case "changeColor" -> {
                 if (Effect.changeColor.contains(lampe)) {
@@ -274,4 +286,7 @@ public class LampActions {
         return reader.readLine();
     }
 
+    public static int getMatrix() {
+        return matrix;
+    }
 }

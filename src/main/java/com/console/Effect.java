@@ -16,9 +16,9 @@ public class Effect {
             byte[] randomColor;
             randomColor = new byte[3];
             new Random().nextBytes(randomColor);
-            lampe.setRed(randomColor[0]);
-            lampe.setGreen(randomColor[1]);
-            lampe.setBlue(randomColor[2]);
+            lampe.setRed(randomColor[0],1);
+            lampe.setGreen(randomColor[1],1);
+            lampe.setBlue(randomColor[2],1);
         }
     }
 
