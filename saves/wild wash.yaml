@@ -1,6 +1,8 @@
 ---
 name: "wild wash - 2"
 channel: 21
+rgbmatrix: 4
+gobo: 0
 channelData:
   - dimmer
   - custom
