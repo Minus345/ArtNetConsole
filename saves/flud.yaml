@@ -1,0 +1,13 @@
+---
+name: "flud"
+channel: 4
+channelData:
+  - red
+  - green
+  - blue
+  - white
+channelName:
+  - red
+  - green
+  - blue
+  - white

@@ -1,0 +1,47 @@
+---
+name: "wild wash - 2"
+channel: 21
+channelData:
+  - dimmer
+  - custom
+  - strobo
+  - custom
+  - custom
+  - red:1
+  - green:1
+  - blue:1
+  - white:1
+  - red:2
+  - green:2
+  - blue:2
+  - white:2
+  - red:3
+  - green:3
+  - blue:3
+  - white:3
+  - red:4
+  - green:4
+  - blue:4
+  - white:4
+channelName:
+  - dimmer
+  - strobo
+  - strobo effect
+  - dimmer patterns
+  - dimmer patterns
+  - red:1
+  - green:1
+  - blue:1
+  - white:1
+  - red:2
+  - green:2
+  - blue:2
+  - white:2
+  - red:3
+  - green:3
+  - blue:3
+  - white:3
+  - red:4
+  - green:4
+  - blue:4
+  - white:4
