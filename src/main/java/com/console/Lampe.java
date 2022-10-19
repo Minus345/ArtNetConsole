@@ -23,21 +23,26 @@ public class Lampe {
     private final ArrayList<Byte> gobo = new ArrayList<>();
     private final byte[] dmx;
     private final int matrixCount;
+    private final int goboCount;
 
 
-    public Lampe(int id, String name, int channel, String[] channelData, String[] channelName, int rgbMatrix) {
+    public Lampe(int id, String name, int channel, String[] channelData, String[] channelName, int rgbMatrix, int goboCount) {
         this.id = id;
         this.name = name;
         this.channel = channel;
         this.channelData = channelData;
         this.channelName = channelName;
         this.matrixCount = rgbMatrix;
+        this.goboCount = goboCount;
         dmx = new byte[channel];
         for (int i = 0; i < matrixCount; i++) {
             red.add((byte) 0);
             green.add((byte) 0);
             blue.add((byte) 0);
             white.add((byte) 0);
+        }
+        for (int i = 0; i < this.goboCount; i++) {
+            gobo.add((byte) 0);
         }
     }
 
@@ -142,7 +147,7 @@ public class Lampe {
     }
 
     public void setGobo(byte gobo, int gobocount) {
-        this.white.set(gobocount, gobo);
+        this.gobo.set(gobocount, gobo);
     }
 
     public int getChannel() {

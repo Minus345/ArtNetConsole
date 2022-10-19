@@ -28,7 +28,7 @@ public class Main {
 
         System.out.println("Network Interface: " + ni.getName() + " | " + ni.getInetAddresses().nextElement() + " | " + ni.getInterfaceAddresses());
 
-        //Add Lampen
+        //Add Lampene
         PatchReader.readFile(args[1], args[2]);
         System.out.println("Amzahl der Lampen: " + Lampen.size());
         //Sort Lamps

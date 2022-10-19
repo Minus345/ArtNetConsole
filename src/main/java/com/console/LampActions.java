@@ -78,7 +78,7 @@ public class LampActions {
             case "white" -> lampe.setWhite((byte) selectionParameter(), matrix);
             case "gobo" -> {
                 System.out.println("Gobo Rad:");
-                int goboCount = Integer.parseInt(getLine());
+                int goboCount = getIntFormLine();
                 lampe.setGobo((byte) selectionParameter(), goboCount);
             }
             case "e", "effect" -> switchEffect(lampe);
@@ -183,15 +183,16 @@ public class LampActions {
 
     }
 
-    /**
-     * reads the courant line in the terminal
-     *
-     * @return
-     * @throws IOException
-     */
-    public static String getLine() throws IOException {
+    private static String getLine() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         return reader.readLine();
+    }
+    private static int getIntFormLine(){
+        try {
+            return Integer.parseInt(getLine());
+        } catch (IOException e) {
+            return 0;
+        }
     }
 
     public static int getMatrix() {

@@ -2,6 +2,7 @@
 name: "pico beam"
 channel: 13
 rgbmatrix: 1
+gobo: 0
 channelData:
   - pan
   - panfein

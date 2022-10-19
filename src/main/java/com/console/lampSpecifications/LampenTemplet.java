@@ -3,30 +3,30 @@ package com.console.lampSpecifications;
 import com.console.Lampe;
 import com.console.Main;
 
-import java.util.Arrays;
-
 public class LampenTemplet {
 
     private String name;
     private int channel;
     private int rgbmatrix;
+    private int gobo;
     private String[] channelData = new String[channel];
     private String[] channelName = new String[channel];
 
-    public LampenTemplet(String name, int channel, String[] channelData, String[] channelName,int rgbmatrix) {
+    public LampenTemplet(String name, int channel, String[] channelData, String[] channelName, int rgbmatrix, int gobo) {
         this.name = name;
         this.channel = channel;
         this.channelData = channelData;
         this.channelName = channelName;
         this.rgbmatrix = rgbmatrix;
+        this.gobo = gobo;
     }
 
     // Without a default constructor, Jackson will throw an exception
     public LampenTemplet() {
     }
 
-    public void createLamp(int id){
-        Main.getLampen().add(new Lampe(id,name,channel,channelData,channelName,rgbmatrix));
+    public void createLamp(int id) {
+        Main.getLampen().add(new Lampe(id, name, channel, channelData, channelName, rgbmatrix, gobo));
     }
 
     // Getters and setters
@@ -69,5 +69,13 @@ public class LampenTemplet {
 
     public void setRgbmatrix(int rgbmatrix) {
         this.rgbmatrix = rgbmatrix;
+    }
+
+    public int getGobo() {
+        return gobo;
+    }
+
+    public void setGobo(int gobo) {
+        this.gobo = gobo;
     }
 }

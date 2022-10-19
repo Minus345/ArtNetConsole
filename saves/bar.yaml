@@ -2,6 +2,7 @@
 name: "bar"
 channel: 24
 rgbmatrix: 8
+gobo: 0
 channelData:
   - red:1
   - green:1

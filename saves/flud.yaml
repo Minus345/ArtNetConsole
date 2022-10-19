@@ -1,0 +1,15 @@
+---
+name: "flud"
+channel: 4
+rgbmatrix: 1
+gobo: 0
+channelData:
+  - red:1
+  - green:1
+  - blue:1
+  - white:1
+channelName:
+  - red:1
+  - green:1
+  - blue:1
+  - white:1

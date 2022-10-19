@@ -2,6 +2,3 @@
 name: "patch"
 universum: 1
 patchArray:
-  - "bar.yaml"
-  - "brick-13ch.yaml"
-  - "pico_beam.yaml"

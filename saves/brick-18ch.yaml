@@ -2,6 +2,7 @@
 name: "brick 18ch"
 channel: 18
 rgbmatrix: 4
+gobo: 0
 channelData:
   - red:1
   - green:1
