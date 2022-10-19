@@ -26,5 +26,5 @@ Using ArtNet as outgoing protocoll.
 - Web Interface
 
 ## Start Arguments
- ` java - jar ArtNetConsole [path to patch file] [path to scene directory] [path to scenes save]`
+ ` java - jar ArtNetConsole [network interface] [path to patch file] [path to scene directory] [path to scenes save]`
 

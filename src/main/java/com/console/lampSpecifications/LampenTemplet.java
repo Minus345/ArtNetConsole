@@ -9,14 +9,16 @@ public class LampenTemplet {
 
     private String name;
     private int channel;
+    private int rgbmatrix;
     private String[] channelData = new String[channel];
     private String[] channelName = new String[channel];
 
-    public LampenTemplet(String name, int channel, String[] channelData, String[] channelName) {
+    public LampenTemplet(String name, int channel, String[] channelData, String[] channelName,int rgbmatrix) {
         this.name = name;
         this.channel = channel;
         this.channelData = channelData;
         this.channelName = channelName;
+        this.rgbmatrix = rgbmatrix;
     }
 
     // Without a default constructor, Jackson will throw an exception
@@ -24,15 +26,10 @@ public class LampenTemplet {
     }
 
     public void createLamp(int id){
-        Main.getLampen().add(new Lampe(id,name,channel,channelData,channelName));
+        Main.getLampen().add(new Lampe(id,name,channel,channelData,channelName,rgbmatrix));
     }
 
     // Getters and setters
-
-    @Override
-    public String toString() {
-        return "\nName: " + name  + "\nChannel: "+ channel + "\nChannelData " + Arrays.toString(channelData)  + "\nChannelName: " + Arrays.toString(channelName) + "\n";
-    }
 
     public String getName() {
         return name;
@@ -64,5 +61,13 @@ public class LampenTemplet {
 
     public void setChannelName(String[] channelName) {
         this.channelName = channelName;
+    }
+
+    public int getRgbmatrix() {
+        return rgbmatrix;
+    }
+
+    public void setRgbmatrix(int rgbmatrix) {
+        this.rgbmatrix = rgbmatrix;
     }
 }

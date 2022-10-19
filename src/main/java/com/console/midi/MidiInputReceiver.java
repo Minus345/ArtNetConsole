@@ -1,5 +1,6 @@
 package com.console.midi;
 
+import com.console.LampActions;
 import com.console.Main;
 
 import javax.sound.midi.MidiMessage;
@@ -25,8 +26,6 @@ public class MidiInputReceiver implements Receiver {
         System.out.println();
 
          */
-
-
         if (Main.getSelectedLampe() == null) {
             System.out.println("keine Lampe festgelegt");
             return;
@@ -36,18 +35,15 @@ public class MidiInputReceiver implements Receiver {
                     case 1 -> Main.getSelectedLampe().setPan((byte) (255 / 127 * midiMassage[2])); //map 0-127 zu 0 -255
                     case 2 -> Main.getSelectedLampe().setTilt((byte) (255 / 127 * midiMassage[2])); //map 0-127 zu 0 -255
                     case 3 -> Main.getSelectedLampe().setDimmer((byte) (255 / 127 * midiMassage[2])); //map 0-127 zu 0 -255
-                    case 4 -> Main.getSelectedLampe().setRed((byte) (255 / 127 * midiMassage[2])); //map 0-127 zu 0 -255
-                    case 5 -> Main.getSelectedLampe().setGreen((byte) (255 / 127 * midiMassage[2])); //map 0-127 zu 0 -255
-                    case 6 -> Main.getSelectedLampe().setBlue((byte) (255 / 127 * midiMassage[2])); //map 0-127 zu 0 -255
-                    case 7 -> Main.getSelectedLampe().setWhite((byte) (255 / 127 * midiMassage[2])); //map 0-127 zu 0 -255
+                    case 4 -> Main.getSelectedLampe().setRed((byte) (255 / 127 * midiMassage[2]), LampActions.getMatrix()); //map 0-127 zu 0 -255
+                    case 5 -> Main.getSelectedLampe().setGreen((byte) (255 / 127 * midiMassage[2]), LampActions.getMatrix()); //map 0-127 zu 0 -255
+                    case 6 -> Main.getSelectedLampe().setBlue((byte) (255 / 127 * midiMassage[2]), LampActions.getMatrix()); //map 0-127 zu 0 -255
+                    case 7 -> Main.getSelectedLampe().setWhite((byte) (255 / 127 * midiMassage[2]), LampActions.getMatrix()); //map 0-127 zu 0 -255
                     case 8 -> Main.getSelectedLampe().setStrobo((byte) (255 / 127 * midiMassage[2])); //map 0-127 zu 0 -255
                     case 9 -> Main.getSelectedLampe().setSpeed((byte) (255 / 127 * midiMassage[2])); //map 0-127 zu 0 -255
                 }
             }
         }
-        //System.out.println("Receive Midi");
-        //System.out.println("Receive Midi");
-
     }
 
     public void close() {
