@@ -1,13 +1,12 @@
 package com.console;
 
 import com.console.patch.PatchWriter;
-import com.console.scene.Scene;
+import com.console.scene.SceneSettings;
 import com.console.scene.Scenes;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Objects;
 
 public class LampActions {
 
@@ -18,24 +17,17 @@ public class LampActions {
      */
     public static void selectLamp() throws IOException, InterruptedException, ClassNotFoundException {
         System.out.println("Action Eingeben: [Lamp ID]/ \"scene\" / \"patch\"");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String selectionString = reader.readLine();
-        if (Objects.equals(selectionString, "scene")) {
-            sceneSettings();
+        String selectionString = getLine();
+        switch (selectionString) {
+            case "scene" -> SceneSettings.sceneSettings();
+            case "patch" -> PatchWriter.writePatch();
         }
-        if (Objects.equals(selectionString, "patch")) {
-            PatchWriter.writePatch();
-        }
+
         int selection = 0;
         try {
             selection = Integer.parseInt(selectionString);
         } catch (Exception e) {
             selectLamp();
-        }
-
-        if (selection == 0) {
-            sceneSettings();
-            return;
         }
 
         for (Lampe lampe : Main.Lampen) {
@@ -49,59 +41,6 @@ public class LampActions {
                 modifyLampe(lampe);
             }
         }
-    }
-
-    /**
-     * User Interface for starting and stopping scenes
-     */
-    private static void sceneSettings() throws IOException, InterruptedException, ClassNotFoundException {
-        System.out.println("Scene: \"start\" / \"stop\" / \"delete\" / \"getActive\" / \"save\" / \"read\" / \"exit\"");
-        switch (getLine()) {
-            case "start" -> {
-                System.out.println("Name:");
-                Scene scene = Scenes.select(getLine());
-                if (scene == null) {
-                    sceneSettings();
-                } else {
-                    Scenes.startScene(scene);
-                }
-            }
-            case "stop" -> {
-                System.out.println("Name:");
-                Scene scene = Scenes.select(getLine());
-                if (scene == null) {
-                    sceneSettings();
-                } else {
-                    if (Scenes.runningScenesArray.contains(scene)) {
-                        Scenes.stopScene(scene);
-                    } else {
-                        System.out.println("Scene ist gerade nicht aktiv");
-                        sceneSettings();
-                    }
-
-                }
-            }
-            case "delete" -> {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-                System.out.println("Name:");
-                String delete = reader.readLine();
-                Scenes.scenes.remove(delete);
-                delete = null;
-            }
-            case "getActiv" -> {
-                for (int i = 0; i < Scenes.runningScenesArray.size(); i++) {
-                    System.out.println(Scenes.runningScenesArray.get(i).getName());
-                }
-            }
-            case "save" -> Scenes.writeSceneToFile();
-            case "read" -> Scenes.readSceneFromFile();
-            case "exit" -> selectLamp();
-            default -> {
-                System.out.println("Falsch Geschrieben");
-                sceneSettings();
-            }
-        }
-        sceneSettings();
     }
 
     public static void modifyLampe(Lampe lampe) throws IOException, InterruptedException, ClassNotFoundException {
@@ -151,45 +90,7 @@ public class LampActions {
             }
             case "clear" -> lampe.clearLampe();
             case "exit" -> selectLamp();
-            case "create" -> {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-                System.out.println("Name:"); //String name,boolean loop, int loopCount
-                String name = reader.readLine();
-                System.out.println("loop: [true/false]");
-                boolean loop = Boolean.parseBoolean(reader.readLine());
-                int loopCount;
-                if (!loop) {
-                    System.out.println("loop Anzahl:");
-                    loopCount = Integer.parseInt(reader.readLine());
-                } else {
-                    loopCount = 10;
-                }
-                Scenes.createScene(name, loop, loopCount);
-            }
-            case "save" -> {
-                if (Scenes.getActiveScene() == null) {
-                    System.out.println("keine Scene ausgewält");
-                    return;
-                }
-
-                System.out.println("Nummer: ");
-                int number = Integer.parseInt(getLine());
-                System.out.println("Übergangszeit: ");
-                int transitionTime = Integer.parseInt(getLine());
-                System.out.println("Wartezeit: ");
-                int stayTime = Integer.parseInt(getLine());
-
-                byte[] dmxData = new byte[512];
-                int positionDmxData = 0;
-
-                for (Lampe alampe : Main.getLampen()) {
-                    System.arraycopy(alampe.getDmx(), 0, dmxData, positionDmxData, alampe.getChannel());
-                    positionDmxData = positionDmxData + alampe.getChannel();
-                }
-
-                Scenes.getActiveScene().addStep(number, transitionTime, stayTime, dmxData);
-
-            }
+            case "create" -> SceneSettings.create();
             case "select" -> Scenes.setActiveScene(Scenes.select(getLine()));
             case "getSelect" -> System.out.println(Scenes.getActiveScene().getName());
             case "getAllScenes" -> {
@@ -205,8 +106,6 @@ public class LampActions {
      * add an effect to the lamp
      *
      * @param lampe
-     * @throws IOException
-     * @throws InterruptedException
      */
     private static void switchEffect(Lampe lampe) throws IOException, InterruptedException, ClassNotFoundException {
         System.out.println("Effect:");
@@ -215,26 +114,26 @@ public class LampActions {
         switch (selection) {
             case "data" -> channelData(lampe);
             case "r" -> {
-                lampe.setRed((byte) 255, 0);
-                lampe.setGreen((byte) 0, 0);
-                lampe.setBlue((byte) 0, 0);
+                lampe.setRed((byte) 255, -1);
+                lampe.setGreen((byte) 0, -1);
+                lampe.setBlue((byte) 0, -1);
             }
             case "g" -> {
-                lampe.setRed((byte) 0, 0);
-                lampe.setGreen((byte) 255, 0);
-                lampe.setBlue((byte) 0, 0);
+                lampe.setRed((byte) 0, -1);
+                lampe.setGreen((byte) 255, -1);
+                lampe.setBlue((byte) 0, -1);
             }
             case "b" -> {
-                lampe.setRed((byte) 0, 0);
-                lampe.setGreen((byte) 0, 0);
-                lampe.setBlue((byte) 255, 0);
+                lampe.setRed((byte) 0, -1);
+                lampe.setGreen((byte) 0, -1);
+                lampe.setBlue((byte) 255, -1);
             }
             case "w" -> {
-                lampe.setRed((byte) 255, 0);
-                lampe.setGreen((byte) 255, 0);
-                lampe.setBlue((byte) 255, 0);
+                lampe.setRed((byte) 255, -1);
+                lampe.setGreen((byte) 255, -1);
+                lampe.setBlue((byte) 255, -1);
             }
-            case "white" -> lampe.setWhite((byte) 255, 0);
+            case "white" -> lampe.setWhite((byte) 255, -1);
             case "dimmer" -> lampe.setDimmer((byte) 255);
             case "changeColor" -> {
                 if (Effect.changeColor.contains(lampe)) {
@@ -258,29 +157,8 @@ public class LampActions {
                 }
             }
             case "matrix" -> {
-                if (Effect.matrixBounce.contains(lampe)) {
-                    Effect.matrixBounce.remove(lampe);
-                } else {
-                    Effect.matrixBounce.add(lampe);
-                }
-                System.out.println("red:");
-                byte r = Byte.parseByte(getLine());
-                System.out.println("green:");
-                byte g = Byte.parseByte(getLine());
-                System.out.println("blue:");
-                byte b = Byte.parseByte(getLine());
-                System.out.println("white:");
-                byte w = Byte.parseByte(getLine());
-                System.out.println("Starting");
-                Runnable runnable = () -> {
-                    try {
-                        Effect.matrixBounce(r, g, b, w);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                };
-                Thread thread = new Thread(runnable);
-                thread.start();
+                Effect effect = new Effect();
+                effect.matrixBounce(lampe);
             }
             case "exit" -> selectLamp();
             default -> System.out.println("Falsch geschrieben");
@@ -296,7 +174,13 @@ public class LampActions {
     private static int selectionParameter() throws IOException {
         System.out.println("Wert auswähle");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        return Integer.parseInt(reader.readLine());
+        try {
+            return Integer.parseInt(reader.readLine());
+        }catch (NumberFormatException e){
+            System.out.println("Falsche Eingabe");
+            return 0;
+        }
+
     }
 
     /**
