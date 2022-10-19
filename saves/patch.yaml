@@ -2,3 +2,4 @@
 name: "patch"
 universum: 1
 patchArray:
+  - "fixtures/pixelbeam.yaml"

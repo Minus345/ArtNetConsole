@@ -12,6 +12,7 @@ public class Lampe {
     private final ArrayList<Byte> green = new ArrayList<>();
     private final ArrayList<Byte> blue = new ArrayList<>();
     private final ArrayList<Byte> white = new ArrayList<>();
+    private byte colorWheel;
     private byte pan;
     private byte panfein;
     private byte tilt;
@@ -20,6 +21,8 @@ public class Lampe {
     private byte speed;
     private byte strobo;
     private byte shutter;
+    private byte fokus;
+    private byte prisma;
     private final ArrayList<Byte> gobo = new ArrayList<>();
     private final byte[] dmx;
     private final int matrixCount;
@@ -53,12 +56,15 @@ public class Lampe {
             switch (channelData[i]) {
                 case "pan" -> dmx[i] = pan;
                 case "tilt" -> dmx[i] = tilt;
-                case "dimmer" -> dmx[i] = dimmer;
-                case "speed" -> dmx[i] = speed;
-                case "strobo" -> dmx[i] = strobo;
                 case "panfein" -> dmx[i] = panfein;
                 case "tiltfein" -> dmx[i] = tiltfein;
+                case "dimmer" -> dmx[i] = dimmer;
+                case "speed" -> dmx[i] = speed;
+                case "colorwheel" -> dmx[i] = colorWheel;
+                case "strobo" -> dmx[i] = strobo;
                 case "shutter" -> dmx[i] = shutter;
+                case "fokus" -> dmx[i] = fokus;
+                case "prisma" -> dmx[i] = prisma;
                 case "custom" -> dmx[i] = 0;
             }
             if (channelData[i].startsWith("red")) {
@@ -236,5 +242,29 @@ public class Lampe {
 
     public int getMatrixCount() {
         return matrixCount;
+    }
+
+    public byte getFokus() {
+        return fokus;
+    }
+
+    public void setFokus(byte fokus) {
+        this.fokus = fokus;
+    }
+
+    public byte getPrisma() {
+        return prisma;
+    }
+
+    public void setPrisma(byte prisma) {
+        this.prisma = prisma;
+    }
+
+    public byte getColorWheel() {
+        return colorWheel;
+    }
+
+    public void setColorWheel(byte colorWheel) {
+        this.colorWheel = colorWheel;
     }
 }

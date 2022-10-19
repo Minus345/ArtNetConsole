@@ -1,0 +1,39 @@
+---
+name: "mhx-200"
+channel: 16
+rgbmatrix: 0
+gobo: 2
+channelData:
+  - pan
+  - tilt
+  - panfein
+  - tiltfein
+  - custom
+  - colorwheel
+  - shutter
+  - dimmer
+  - gobo:1
+  - custom
+  - gobo:2
+  - fokus
+  - custom
+  - prisma
+  - custom
+  - custom
+channelName:
+  - pan
+  - tilt
+  - panfein
+  - tiltfein
+  - geschwidigkeit
+  - farbrad
+  - shutter
+  - dimmer
+  - gobo 1
+  - gobo rotation
+  - gobo 2
+  - fokus
+  - blende
+  - prisma
+  - funktions
+  - effecte

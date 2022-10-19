@@ -69,7 +69,10 @@ public class LampActions {
             case "speed" -> lampe.setSpeed((byte) selectionParameter());
             case "dimmer" -> lampe.setDimmer((byte) selectionParameter());
             case "shutter" -> lampe.setShutter((byte) selectionParameter());
+            case "colorwheel" -> lampe.setColorWheel((byte) selectionParameter());
             case "strobo" -> lampe.setStrobo((byte) selectionParameter());
+            case "fokus" -> lampe.setFokus((byte) selectionParameter());
+            case "prisma" -> lampe.setPrisma((byte) selectionParameter());
             case "matrix", "m" -> matrix = selectionParameter() - 1;
             case "matrixAll", "ma" -> matrix = -1;
             case "red" -> lampe.setRed((byte) selectionParameter(), matrix);
@@ -78,7 +81,7 @@ public class LampActions {
             case "white" -> lampe.setWhite((byte) selectionParameter(), matrix);
             case "gobo" -> {
                 System.out.println("Gobo Rad:");
-                int goboCount = getIntFormLine();
+                int goboCount = getIntFormLine() - 1; //lsit starting with 0
                 lampe.setGobo((byte) selectionParameter(), goboCount);
             }
             case "e", "effect" -> switchEffect(lampe);
@@ -176,7 +179,7 @@ public class LampActions {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         try {
             return Integer.parseInt(reader.readLine());
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             System.out.println("Falsche Eingabe");
             return 0;
         }
@@ -187,7 +190,8 @@ public class LampActions {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         return reader.readLine();
     }
-    private static int getIntFormLine(){
+
+    private static int getIntFormLine() {
         try {
             return Integer.parseInt(getLine());
         } catch (IOException e) {

@@ -1,0 +1,35 @@
+---
+name: "mh-110"
+channel: 14
+rgbmatrix: 1
+gobo: 0
+channelData:
+  - pan
+  - panfein
+  - tilt
+  - tiltfein
+  - custom
+  - dimmer
+  - red:1
+  - green:1
+  - blue:1
+  - white:1
+  - custom
+  - custom
+  - strobo
+  - custom
+channelName:
+  - pan
+  - panfein
+  - tilt
+  - tiltfein
+  - geschwindigkeit
+  - dimmer
+  - red:1
+  - green:1
+  - blue:1
+  - white:1
+  - farbtemperaturen
+  - konstante farben
+  - strobo
+  - funktions
