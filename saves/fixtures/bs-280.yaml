@@ -1,0 +1,27 @@
+---
+name: "bs-280"
+channel: 21
+rgbmatrix: 0
+gobo: 0
+channelData:
+  - pan
+  - panfein
+  - tilt
+  - tiltfein
+  - custom
+  - custom
+  - custom
+  - custom
+  - colorwheel
+  - gobo:1
+  - gobo:2
+  - custom
+  - prisma
+  - custom
+  - zoom
+  - custom
+  - fokus
+  - custom
+  - custom
+  - custom
+  - dimmer
