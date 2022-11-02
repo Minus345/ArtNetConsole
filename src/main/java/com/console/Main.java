@@ -35,16 +35,22 @@ public class Main {
         Lampen.sort(Comparator.comparingInt(Lampe::getId));
 
         //Get save file path
-         setSceneSavePath(args[3]);
+        setSceneSavePath(args[3]);
 
         //Create Midi Device
+        System.out.println("----Midi----");
         Midi midi = new Midi();
         midi.Midi();
 
         //Start Ticker
+        System.out.println("----Art Net----");
         SendArtNet.tick(address); //192.168.178.131
         tick();
 
+        System.out.println("----Serial Port----");
+        SerialLink.run();
+
+        System.out.println("----Start----");
         LampActions.selectLamp();
     }
 

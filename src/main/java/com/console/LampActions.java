@@ -19,8 +19,8 @@ public class LampActions {
         System.out.println("Action Eingeben: [Lamp ID]/ \"scene\" / \"patch\"");
         String selectionString = getLine();
         switch (selectionString) {
-            case "scene" -> SceneSettings.sceneSettings();
-            case "patch" -> PatchWriter.writePatch();
+            case "scene", "s" -> SceneSettings.sceneSettings();
+            case "patch", "p" -> PatchWriter.writePatch();
         }
 
         int selection = 0;
@@ -38,71 +38,69 @@ public class LampActions {
             if (lampe.getId() == selection) {
                 System.out.println("Lampe gefunden");
                 Main.setSelectedLampe(lampe);
-                modifyLampe(lampe);
+                channelData(Main.getSelectedLampe());
+                modifyLampe();
             }
         }
     }
 
-    public static void modifyLampe(Lampe lampe) throws IOException, InterruptedException, ClassNotFoundException {
+    public static void modifyLampe() throws IOException, InterruptedException, ClassNotFoundException {
         while (true) {
-            channelData(lampe);
+            BufferedReader reader1 = new BufferedReader(new InputStreamReader(System.in));
+            String line = reader1.readLine();
+            switch (line) {
+                case "pan" -> Main.getSelectedLampe().setPan((byte) selectionParameter());
+                case "panfein" -> Main.getSelectedLampe().setPanfein((byte) selectionParameter());
+                case "tilt" -> Main.getSelectedLampe().setTilt((byte) selectionParameter());
+                case "tiltfein" -> Main.getSelectedLampe().setTiltfein((byte) selectionParameter());
+                case "speed" -> Main.getSelectedLampe().setSpeed((byte) selectionParameter());
+                case "dimmer" -> Main.getSelectedLampe().setDimmer((byte) selectionParameter());
+                case "shutter" -> Main.getSelectedLampe().setShutter((byte) selectionParameter());
+                case "colorwheel" -> Main.getSelectedLampe().setColorWheel((byte) selectionParameter());
+                case "strobo" -> Main.getSelectedLampe().setStrobo((byte) selectionParameter());
+                case "fokus" -> Main.getSelectedLampe().setFokus((byte) selectionParameter());
+                case "prisma" -> Main.getSelectedLampe().setPrisma((byte) selectionParameter());
+                case "matrix", "m" -> matrix = selectionParameter() - 1;
+                case "matrixAll", "ma" -> matrix = -1;
+                case "red" -> Main.getSelectedLampe().setRed((byte) selectionParameter(), matrix);
+                case "green" -> Main.getSelectedLampe().setGreen((byte) selectionParameter(), matrix);
+                case "blue" -> Main.getSelectedLampe().setBlue((byte) selectionParameter(), matrix);
+                case "white" -> Main.getSelectedLampe().setWhite((byte) selectionParameter(), matrix);
+                case "gobo" -> {
+                    System.out.println("Gobo Rad:");
+                    int goboCount = getIntFormLine() - 1; //lsit starting with 0
+                    Main.getSelectedLampe().setGobo((byte) selectionParameter(), goboCount);
+                }
+                case "e", "effect" -> switchEffect(Main.getSelectedLampe());
+                case "i", "info" -> {
+                    for (int i = 0; i <= (Main.getSelectedLampe().getChannelName().length - 1); i++) {
+                        System.out.print(i + " : " + Main.getSelectedLampe().getChannelData()[i] + " : " + Main.getSelectedLampe().getChannelName()[i] + " | ");
+                    }
+                    System.out.println();
+                }
+                case "clear" -> Main.getSelectedLampe().clearLampe();
+                case "exit" -> selectLamp();
+                case "create" -> SceneSettings.create();
+                case "save" -> SceneSettings.saveScene();
+                case "select" -> Scenes.setActiveScene(Scenes.select(getLine()));
+                case "getSelect" -> System.out.println(Scenes.getActiveScene().getName());
+                case "getAllScenes" -> {
+                    for (int i = 0; i < Scenes.scenes.size(); i++) {
+                        System.out.println(Scenes.scenes.get(i));
+                    }
+                }
+                default -> System.out.println("Falsch geschrieben");
+            }
+            System.out.println("-");
         }
     }
 
-    /**
-     * Set individual parameters per lamp
-     */
     private static void channelData(Lampe lampe) throws IOException, InterruptedException, ClassNotFoundException {
         System.out.println("Channel auswählen");
         for (int i = 0; i <= (lampe.getChannelName().length - 1); i++) {
             System.out.print(i + " : " + lampe.getChannelData()[i] + " | ");
         }
         System.out.println();
-
-        BufferedReader reader1 = new BufferedReader(new InputStreamReader(System.in));
-        String line = reader1.readLine();
-        switch (line) {
-            case "pan" -> lampe.setPan((byte) selectionParameter());
-            case "panfein" -> lampe.setPanfein((byte) selectionParameter());
-            case "tilt" -> lampe.setTilt((byte) selectionParameter());
-            case "tiltfein" -> lampe.setTiltfein((byte) selectionParameter());
-            case "speed" -> lampe.setSpeed((byte) selectionParameter());
-            case "dimmer" -> lampe.setDimmer((byte) selectionParameter());
-            case "shutter" -> lampe.setShutter((byte) selectionParameter());
-            case "colorwheel" -> lampe.setColorWheel((byte) selectionParameter());
-            case "strobo" -> lampe.setStrobo((byte) selectionParameter());
-            case "fokus" -> lampe.setFokus((byte) selectionParameter());
-            case "prisma" -> lampe.setPrisma((byte) selectionParameter());
-            case "matrix", "m" -> matrix = selectionParameter() - 1;
-            case "matrixAll", "ma" -> matrix = -1;
-            case "red" -> lampe.setRed((byte) selectionParameter(), matrix);
-            case "green" -> lampe.setGreen((byte) selectionParameter(), matrix);
-            case "blue" -> lampe.setBlue((byte) selectionParameter(), matrix);
-            case "white" -> lampe.setWhite((byte) selectionParameter(), matrix);
-            case "gobo" -> {
-                System.out.println("Gobo Rad:");
-                int goboCount = getIntFormLine() - 1; //lsit starting with 0
-                lampe.setGobo((byte) selectionParameter(), goboCount);
-            }
-            case "e", "effect" -> switchEffect(lampe);
-            case "i", "info" -> {
-                for (int i = 0; i <= (lampe.getChannelName().length - 1); i++) {
-                    System.out.print(i + " : " + lampe.getChannelData()[i] + " : " + lampe.getChannelName()[i] + " | ");
-                }
-                System.out.println();
-            }
-            case "clear" -> lampe.clearLampe();
-            case "exit" -> selectLamp();
-            case "create" -> SceneSettings.create();
-            case "select" -> Scenes.setActiveScene(Scenes.select(getLine()));
-            case "getSelect" -> System.out.println(Scenes.getActiveScene().getName());
-            case "getAllScenes" -> {
-                for (int i = 0; i < Scenes.scenes.size(); i++) {
-                    System.out.println(Scenes.scenes.get(i));
-                }
-            }
-            default -> System.out.println("Falsch geschrieben");
-        }
     }
 
     /**
@@ -201,5 +199,9 @@ public class LampActions {
 
     public static int getMatrix() {
         return matrix;
+    }
+
+    public static void setMatrix(int matrix) {
+        LampActions.matrix = matrix;
     }
 }

@@ -104,7 +104,16 @@ public class SceneSettings {
      * stops the courant selected scene
      */
     private static void stop() throws IOException, InterruptedException, ClassNotFoundException {
-        System.out.println("Name:");
+        if (Scenes.runningScenesArray.isEmpty()) {
+            System.out.println("Keine Szenen da, die man stoppen kann");
+            return;
+        }
+        System.out.print("Name: ");
+        for (Scene scene : Scenes.runningScenesArray) {
+            System.out.println(scene.getName() + " ");
+        }
+
+
         Scene scene = Scenes.select(getLine());
         if (scene == null) {
             sceneSettings();
@@ -124,7 +133,10 @@ public class SceneSettings {
      * user input in terminal
      */
     private static void start() throws IOException, InterruptedException, ClassNotFoundException {
-        System.out.println("Name:");
+        System.out.print("Name: ");
+        for (Scene scene : Scenes.scenes) {
+            System.out.println(scene.getName() + " ");
+        }
         Scene scene = Scenes.select(getLine());
         if (scene == null) {
             sceneSettings();

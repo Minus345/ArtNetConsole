@@ -267,4 +267,24 @@ public class Lampe {
     public void setColorWheel(byte colorWheel) {
         this.colorWheel = colorWheel;
     }
+
+    public ArrayList<Byte> getRed() {
+        return red;
+    }
+
+    public ArrayList<Byte> getGreen() {
+        return green;
+    }
+
+    public ArrayList<Byte> getBlue() {
+        return blue;
+    }
+
+    public ArrayList<Byte> getWhite() {
+        return white;
+    }
+
+    public ArrayList<Byte> getGobo() {
+        return gobo;
+    }
 }

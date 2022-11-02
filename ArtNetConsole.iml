@@ -23,5 +23,6 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.13.4" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.4" level="project" />
     <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.31" level="project" />
+    <orderEntry type="library" name="Maven: com.fazecast:jSerialComm:2.9.2" level="project" />
   </component>
 </module>
