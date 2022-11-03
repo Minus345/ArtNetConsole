@@ -97,6 +97,24 @@ public class Lampe {
         setGreen((byte) 0, -1);
         setBlue((byte) 0, -1);
         setWhite((byte) 0, -1);
+        setDimmer((byte) 0);
+        setShutter((byte) 0);
+        setStrobo((byte) 0);
+        setSpeed((byte) 0);
+        setColorWheel((byte) 0);
+        setPan((byte) 0);
+        setPanfein((byte) 0);
+        setTilt((byte) 0);
+        setTiltfein((byte) 0);
+        setDimmer((byte) 0);
+        setSpeed((byte) 0);
+        setStrobo((byte) 0);
+        setShutter((byte) 0);
+        setFokus((byte) 0);
+        setPrisma((byte) 0);
+        for (int i = 0; i < gobo.size(); i++) {
+            gobo.set(i, (byte) 0);
+        }
     }
 
     public byte[] getDmx() {

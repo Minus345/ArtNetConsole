@@ -33,19 +33,15 @@ public class SerialLink {
         StringBuilder stringBuilder = new StringBuilder();
         while (true) {
             try {
-                //System.out.print((char) in.read());
                 stringBuilder.append((char) in.read());
                 build = stringBuilder.toString();
                 if (build.endsWith("\n")) {
                     stringBuilder.deleteCharAt(stringBuilder.length() - 1);
                     stringBuilder.deleteCharAt(stringBuilder.length() - 1);
                     String build1 = stringBuilder.toString();
-                    //System.out.println(build);
-                    //changeDmxPoti(build);
                     changeDmxSerialInput(build1);
                     stringBuilder = new StringBuilder();
                 }
-                //in.close();
             } catch (Exception e) {
                 System.out.println(e);
                 e.printStackTrace();
@@ -55,6 +51,13 @@ public class SerialLink {
 
     private static void changeDmxSerialInput(String s) {
         String[] split = s.split("\\|");
+
+        if(split[20].equals("c")){
+            for (int i = 0; i < Main.getLampen().size(); i++) {
+                Main.getLampen().get(i).clearLampe();
+            }
+            return;
+        }
 
         if (!split[20].equals("0")) {
             try {
@@ -78,9 +81,7 @@ public class SerialLink {
         }
 
         if (Main.getSelectedLampe() == null) return;
-        if (Main.getSelectedLampe() == lampeAlt) {
-            lampeAlt = Main.getSelectedLampe();
-        } else {
+        if (Main.getSelectedLampe() != lampeAlt) {
             for (int i = 0; i < actuell.length; i++) {
                 actuell[i] = (byte) Integer.parseInt(split[i]);
             }
@@ -108,8 +109,8 @@ public class SerialLink {
             //posAlt[18] = Main.getSelectedLampe().getPan();
             //posAlt[19] = Main.getSelectedLampe().getPan();
 
-            lampeAlt = Main.getSelectedLampe();
         }
+        lampeAlt = Main.getSelectedLampe();
 
         int result[] = new int[20];
         Arrays.fill(result, 0);
@@ -121,81 +122,41 @@ public class SerialLink {
             }
         }
 
-        Main.getSelectedLampe().setPan((byte) result[0]);
-        Main.getSelectedLampe().setPanfein((byte) result[1]);
-        Main.getSelectedLampe().setTilt((byte) result[2]);
-        Main.getSelectedLampe().setTiltfein((byte) result[3]);
-        Main.getSelectedLampe().setSpeed((byte) result[4]);
+       // Main.getSelectedLampe().setPan((byte) result[0]);
+        Main.getSelectedLampe().setPan(setParameterToDmx(result[0]));
+        Main.getSelectedLampe().setPanfein(setParameterToDmx(result[1]));
+        Main.getSelectedLampe().setTilt(setParameterToDmx(result[2]));
+        Main.getSelectedLampe().setTiltfein(setParameterToDmx(result[3]));
+        Main.getSelectedLampe().setSpeed(setParameterToDmx(result[4]));
 
-        Main.getSelectedLampe().setDimmer((byte) result[5]);
-        Main.getSelectedLampe().setShutter((byte) result[6]);
-        Main.getSelectedLampe().setStrobo((byte) result[7]);
-        Main.getSelectedLampe().setFokus((byte) result[8]);
-        Main.getSelectedLampe().setPrisma((byte) result[9]);
+        Main.getSelectedLampe().setDimmer(setParameterToDmx(result[5]));
+        Main.getSelectedLampe().setShutter(setParameterToDmx(result[6]));
+        Main.getSelectedLampe().setStrobo(setParameterToDmx(result[7]));
+        Main.getSelectedLampe().setFokus(setParameterToDmx(result[8]));
+        Main.getSelectedLampe().setPrisma(setParameterToDmx(result[9]));
 
-        Main.getSelectedLampe().setRed((byte) result[10], 0);
-        Main.getSelectedLampe().setGreen((byte) result[11], 0);
-        Main.getSelectedLampe().setBlue((byte) result[12], 0);
-        Main.getSelectedLampe().setWhite((byte) result[13], 0);
-        LampActions.setMatrix((byte) result[14]);
+        Main.getSelectedLampe().setRed(setParameterToDmx(result[10]), 0);
+        Main.getSelectedLampe().setGreen(setParameterToDmx(result[11]), 0);
+        Main.getSelectedLampe().setBlue(setParameterToDmx(result[12]), 0);
+        Main.getSelectedLampe().setWhite(setParameterToDmx(result[13]), 0);
+        if(result[14] > Main.getSelectedLampe().getRed().size() || result[14] < 0){
+            LampActions.setMatrix(0);
+        }else {
+            LampActions.setMatrix(setParameterToDmx(result[14]));
+        }
 
         goboCount = ((byte) result[16]);
         if(!Main.getSelectedLampe().getGobo().isEmpty()) Main.getSelectedLampe().setGobo((byte) result[15], goboCount);
         Main.getSelectedLampe().setColorWheel((byte) result[17]);
-
     }
 
-
-    private static void changeDmxPoti(String s) {
-        String[] split = s.split("\\|");
-
-        if (!split[20].equals("0")) {
-            try {
-                int id = Integer.parseInt(split[20]);
-                for (Lampe lampe : Main.Lampen) {
-                    if (id > Main.getLampen().size()) {
-                        System.out.println("die Lampe gibt es nicht");
-                    }
-                    if (lampe.getId() == id) {
-                        System.out.println("Lampe gefunden");
-                        Main.setSelectedLampe(lampe);
-                    }
-                }
-                System.out.println("Channel auswählen");
-                for (int i = 0; i <= (Main.getSelectedLampe().getChannelName().length - 1); i++) {
-                    System.out.print(i + " : " + Main.getSelectedLampe().getChannelData()[i] + " | ");
-                }
-                System.out.println();
-            } catch (Exception e) {
-            }
+    private static byte setParameterToDmx(int result){
+        if(result > 254){
+            result = 255;
         }
-
-        if (Main.getSelectedLampe() == null) return;
-        try {
-            Main.getSelectedLampe().setPan((byte)Integer.parseInt(split[0]));
-            Main.getSelectedLampe().setPanfein((byte)Integer.parseInt(split[1]));
-            Main.getSelectedLampe().setTilt((byte)Integer.parseInt(split[2]));
-            Main.getSelectedLampe().setTiltfein((byte)Integer.parseInt(split[3]));
-            Main.getSelectedLampe().setSpeed((byte)Integer.parseInt(split[4]));
-
-            Main.getSelectedLampe().setDimmer((byte)Integer.parseInt(split[5]));
-            Main.getSelectedLampe().setShutter((byte)Integer.parseInt(split[6]));
-            Main.getSelectedLampe().setStrobo((byte)Integer.parseInt(split[7]));
-            Main.getSelectedLampe().setFokus((byte)Integer.parseInt(split[8]));
-            Main.getSelectedLampe().setPrisma((byte)Integer.parseInt(split[9]));
-
-            Main.getSelectedLampe().setRed((byte)Integer.parseInt(split[10]), LampActions.getMatrix());
-            Main.getSelectedLampe().setGreen((byte)Integer.parseInt(split[11]), LampActions.getMatrix());
-            Main.getSelectedLampe().setBlue((byte)Integer.parseInt(split[12]), LampActions.getMatrix());
-            Main.getSelectedLampe().setWhite((byte)Integer.parseInt(split[13]), LampActions.getMatrix());
-            LampActions.setMatrix((byte)Integer.parseInt(split[14]));
-
-            //Main.getSelectedLampe().setGobo((byte)Integer.parseInt()(split[15]), goboCount);
-            goboCount = ((byte)Integer.parseInt(split[16]));
-            Main.getSelectedLampe().setColorWheel((byte)Integer.parseInt(split[17]));
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(result < 0){
+            result = 0;
         }
+        return (byte) result;
     }
 }

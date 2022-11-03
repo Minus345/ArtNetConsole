@@ -79,6 +79,11 @@ public class LampActions {
                     System.out.println();
                 }
                 case "clear" -> Main.getSelectedLampe().clearLampe();
+                case "clearall" -> {
+                    for (int i = 0; i < Main.getLampen().size(); i++) {
+                        Main.getLampen().get(i).clearLampe();
+                    }
+                }
                 case "exit" -> selectLamp();
                 case "create" -> SceneSettings.create();
                 case "save" -> SceneSettings.saveScene();
