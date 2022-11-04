@@ -24,7 +24,7 @@ public class SerialLink {
         SerialPort[] comPorts = SerialPort.getCommPorts();
         for (int i = 0; i < comPorts.length; i++)
             System.out.println("comPorts[" + i + "] = " + comPorts[i].getDescriptivePortName());
-        int port = 1;     // array index to select COM port
+        int port = Main.getSerialPort();     // array index to select COM port
         comPorts[port].openPort();
         System.out.println("open port comPorts[" + port + "]  " + comPorts[port].getDescriptivePortName());
         comPorts[port].setBaudRate(9600);
@@ -52,10 +52,13 @@ public class SerialLink {
     private static void changeDmxSerialInput(String s) {
         String[] split = s.split("\\|");
 
-        if(split[20].equals("c")){
+        if (split[20].equals("c")) {
+           //Lampe lampeOld = Main.getSelectedLampe();
+            Main.setSelectedLampe(Main.getLampen().get(0));
             for (int i = 0; i < Main.getLampen().size(); i++) {
                 Main.getLampen().get(i).clearLampe();
             }
+            //Main.setSelectedLampe(lampeOld);
             return;
         }
 
@@ -71,8 +74,9 @@ public class SerialLink {
                         Main.setSelectedLampe(lampe);
                     }
                 }
+                System.out.println(Main.getSelectedLampe().getName());
                 System.out.println("Channel auswählen");
-                for (int i = 0; i <= (Main.getSelectedLampe().getChannelName().length - 1); i++) {
+                for (int i = 0; i < Main.getSelectedLampe().getChannelName().length; i++) {
                     System.out.print(i + " : " + Main.getSelectedLampe().getChannelData()[i] + " | ");
                 }
                 System.out.println();
@@ -85,30 +89,32 @@ public class SerialLink {
             for (int i = 0; i < actuell.length; i++) {
                 actuell[i] = (byte) Integer.parseInt(split[i]);
             }
-            posAlt[0] = Main.getSelectedLampe().getPan();
-            posAlt[1] = Main.getSelectedLampe().getPanfein();
-            posAlt[2] = Main.getSelectedLampe().getTilt();
-            posAlt[3] = Main.getSelectedLampe().getTiltfein();
-            posAlt[4] = Main.getSelectedLampe().getSpeed();
+            try {
+                posAlt[0] = Main.getSelectedLampe().getPan();
+                posAlt[1] = Main.getSelectedLampe().getPanfein();
+                posAlt[2] = Main.getSelectedLampe().getTilt();
+                posAlt[3] = Main.getSelectedLampe().getTiltfein();
+                posAlt[4] = Main.getSelectedLampe().getSpeed();
 
-            posAlt[5] = Main.getSelectedLampe().getDimmer();
-            posAlt[6] = Main.getSelectedLampe().getShutter();
-            posAlt[7] = Main.getSelectedLampe().getStrobo();
-            posAlt[8] = Main.getSelectedLampe().getFokus();
-            posAlt[9] = Main.getSelectedLampe().getPrisma();
+                posAlt[5] = Main.getSelectedLampe().getDimmer();
+                posAlt[6] = Main.getSelectedLampe().getShutter();
+                posAlt[7] = Main.getSelectedLampe().getStrobo();
+                posAlt[8] = Main.getSelectedLampe().getFokus();
+                posAlt[9] = Main.getSelectedLampe().getPrisma();
 
-            posAlt[10] = Main.getSelectedLampe().getRed().get(0);
-            posAlt[11] = Main.getSelectedLampe().getGreen().get(0);
-            posAlt[12] = Main.getSelectedLampe().getBlue().get(0);
-            posAlt[13] = Main.getSelectedLampe().getWhite().get(0);
-            posAlt[14] = (byte) Main.getSelectedLampe().getMatrixCount();
+                posAlt[10] = Main.getSelectedLampe().getRed().get(0);
+                posAlt[11] = Main.getSelectedLampe().getGreen().get(0);
+                posAlt[12] = Main.getSelectedLampe().getBlue().get(0);
+                posAlt[13] = Main.getSelectedLampe().getWhite().get(0);
+                posAlt[14] = (byte) LampActions.getMatrix();
 
-            if (!Main.getSelectedLampe().getGobo().isEmpty()) posAlt[15] = Main.getSelectedLampe().getGobo().get(0);
-            posAlt[16] = (byte) goboCount;
-            //posAlt[17] = Main.getSelectedLampe().getPan();
-            //posAlt[18] = Main.getSelectedLampe().getPan();
-            //posAlt[19] = Main.getSelectedLampe().getPan();
+                if (!Main.getSelectedLampe().getGobo().isEmpty()) posAlt[15] = Main.getSelectedLampe().getGobo().get(0);
+                posAlt[16] = (byte) goboCount;
+                //posAlt[17] = Main.getSelectedLampe().getPan();
+                //posAlt[18] = Main.getSelectedLampe().getPan();
+                //posAlt[19] = Main.getSelectedLampe().getPan();
 
+            }catch (Exception e){}
         }
         lampeAlt = Main.getSelectedLampe();
 
@@ -122,7 +128,7 @@ public class SerialLink {
             }
         }
 
-       // Main.getSelectedLampe().setPan((byte) result[0]);
+        // Main.getSelectedLampe().setPan((byte) result[0]);
         Main.getSelectedLampe().setPan(setParameterToDmx(result[0]));
         Main.getSelectedLampe().setPanfein(setParameterToDmx(result[1]));
         Main.getSelectedLampe().setTilt(setParameterToDmx(result[2]));
@@ -135,28 +141,42 @@ public class SerialLink {
         Main.getSelectedLampe().setFokus(setParameterToDmx(result[8]));
         Main.getSelectedLampe().setPrisma(setParameterToDmx(result[9]));
 
-        Main.getSelectedLampe().setRed(setParameterToDmx(result[10]), 0);
-        Main.getSelectedLampe().setGreen(setParameterToDmx(result[11]), 0);
-        Main.getSelectedLampe().setBlue(setParameterToDmx(result[12]), 0);
-        Main.getSelectedLampe().setWhite(setParameterToDmx(result[13]), 0);
-        if(result[14] > Main.getSelectedLampe().getRed().size() || result[14] < 0){
-            LampActions.setMatrix(0);
-        }else {
-            LampActions.setMatrix(setParameterToDmx(result[14]));
+        if(Main.getSelectedLampe().getMatrixCount() != 0) {
+            Main.getSelectedLampe().setRed(setParameterToDmx(result[10]), 0);
+            Main.getSelectedLampe().setGreen(setParameterToDmx(result[11]), 0);
+            Main.getSelectedLampe().setBlue(setParameterToDmx(result[12]), 0);
+            Main.getSelectedLampe().setWhite(setParameterToDmx(result[13]), 0);
+            if (result[14] > Main.getSelectedLampe().getRed().size() || result[14] < 0) {
+                LampActions.setMatrix(0);
+            } else {
+                LampActions.setMatrix(setParameterToDmx(result[14]));
+            }
         }
+        //System.out.println(result[14] + "  " + LampActions.getMatrix());
 
         goboCount = ((byte) result[16]);
-        if(!Main.getSelectedLampe().getGobo().isEmpty()) Main.getSelectedLampe().setGobo((byte) result[15], goboCount);
+        if (!Main.getSelectedLampe().getGobo().isEmpty()) Main.getSelectedLampe().setGobo((byte) result[15], goboCount);
         Main.getSelectedLampe().setColorWheel((byte) result[17]);
+
+        SystemPrint();
     }
 
-    private static byte setParameterToDmx(int result){
-        if(result > 254){
+    private static byte setParameterToDmx(int result) {
+        if (result > 254) {
             result = 255;
         }
-        if(result < 0){
+        if (result < 0) {
             result = 0;
         }
         return (byte) result;
+    }
+
+    private static void SystemPrint() {
+        Lampe lampe = Main.getSelectedLampe();
+        if (lampe.equals(Main.getLampen().get(0))) return;
+        for (int i = 0; i < lampe.getChannelData().length; i++) {
+            System.out.print(lampe.getChannelData()[i] + ":" + (lampe.getDmx()[i] & 0xff) + " | ");
+        }
+        System.out.println();
     }
 }

@@ -4,3 +4,4 @@ universum: 1
 patchArray:
   - "fixtures/bar.yaml"
   - "fixtures/pico-beam.yaml"
+  - "fixtures/mhx-200.yaml"

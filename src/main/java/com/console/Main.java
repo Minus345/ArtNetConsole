@@ -14,6 +14,8 @@ public class Main {
     private static Lampe selectedLampe;
     private static String sceneSavePath;
 
+    private static int SerialPort;
+
     public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
         System.out.println("Start");
 
@@ -31,6 +33,10 @@ public class Main {
         //Add Lampene
         PatchReader.readFile(args[1], args[2]);
         System.out.println("Amzahl der Lampen: " + Lampen.size());
+        String[] channelData = new String[1];
+        channelData[0] = "NULL Lampe";
+        Lampe lampeNull = new Lampe(0,"NULL",0,channelData,channelData,0,0);
+        Main.getLampen().add(lampeNull);
         //Sort Lamps
         Lampen.sort(Comparator.comparingInt(Lampe::getId));
 
@@ -48,6 +54,7 @@ public class Main {
         tick();
 
         System.out.println("----Serial Port----");
+        setSerialPort(Integer.parseInt(args[4]));
         SerialLink.run();
 
         System.out.println("----Start----");
@@ -93,5 +100,13 @@ public class Main {
 
     public static void setSceneSavePath(String sceneSavePath) {
         Main.sceneSavePath = sceneSavePath;
+    }
+
+    public static int getSerialPort() {
+        return SerialPort;
+    }
+
+    public static void setSerialPort(int serialPort) {
+        SerialPort = serialPort;
     }
 }

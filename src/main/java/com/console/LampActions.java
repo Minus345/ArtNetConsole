@@ -101,8 +101,9 @@ public class LampActions {
     }
 
     private static void channelData(Lampe lampe) throws IOException, InterruptedException, ClassNotFoundException {
+        System.out.println(Main.getSelectedLampe().getName());
         System.out.println("Channel auswählen");
-        for (int i = 0; i <= (lampe.getChannelName().length - 1); i++) {
+        for (int i = 0; i < lampe.getChannelName().length; i++) {
             System.out.print(i + " : " + lampe.getChannelData()[i] + " | ");
         }
         System.out.println();
