@@ -122,6 +122,35 @@ public class Lampe {
         return dmx;
     }
 
+    public byte[] getAllAttributes() {
+        byte[] attributes = new byte[20];
+
+        attributes[0] = getPan();
+        attributes[1] = getPanfein();
+        attributes[2] = getTilt();
+        attributes[3] = getTiltfein();
+        attributes[4] = getSpeed();
+        attributes[5] = getDimmer();
+        attributes[6] = getShutter();
+        attributes[7] = getStrobo();
+        attributes[8] = getFokus();
+        attributes[9] = getPrisma();
+        if (getMatrixCount() != 0) {
+            attributes[10] = getRed().get(0);
+            attributes[11] = getGreen().get(0);
+            attributes[12] = getBlue().get(0);
+            attributes[13] = getWhite().get(0);
+        }
+        attributes[14] = 0;
+        if(getGobo().size() != 0) attributes[15] = getGobo().get(0);
+        attributes[16] = 0;
+        attributes[17] = getColorWheel();
+        attributes[18] = 0;
+        attributes[19] = 0;
+
+        return attributes;
+    }
+
     public int getId() {
         return id;
     }
