@@ -19,7 +19,7 @@ Using ArtNet as outgoing protocoll.
 - Art Net
     - 1 Univers (DMX 512)
 - Java
-    - runns on any system
+    - runs on any system
     - new java 19
     - Terminal based
 ## Todo
