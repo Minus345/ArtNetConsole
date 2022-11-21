@@ -23,7 +23,7 @@ Using ArtNet as outgoing protocoll.
     - new java 19
     - Terminal based
 ## Todo
-- Web Interface
+- Web Interface (<a href="https://lupluv.dev/dmx/">Web Interface Demo</a>)
 
 ## Start Arguments
  ` java - jar ArtNetConsole [network interface] [path to patch file] [path to scene directory] [path to scenes save]`
