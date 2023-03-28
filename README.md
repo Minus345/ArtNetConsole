@@ -4,12 +4,6 @@
 DMX Lighting Software for smal events.
 Using ArtNet as outgoing protocoll.
 
-
-
-
-![Logo](https://www.hlg-fuerth.de/wp-content/uploads/2016/12/lito-logo_schwarz.jpg)
-
-
 ## Features
 - Patch
     - Individual Fixtures
